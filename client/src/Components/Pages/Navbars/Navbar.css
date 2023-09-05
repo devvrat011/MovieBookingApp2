@@ -1,0 +1,33 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.navbar {
+    display: flex;
+    flex-direction: row;
+    background-color: #0254A9;
+    padding: 1.3rem;
+    color: white;
+    justify-content: space-around;
+}
+
+.nav_loc_login {
+    display: flex;
+    justify-content: space-between;
+    width: 100px;
+}
+    
+.nav-box:focus {
+     outline: none;
+}
+
+.nav-box {
+    width: 35rem;
+    height: 2.1rem;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    border: none;
+    padding: 0 15px; 
+}
