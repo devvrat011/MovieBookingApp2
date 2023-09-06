@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import AddTheatre from "../../theatre";
 
 function App() {
 	const [userInput, setUserInput] = useState("");
 	const [list, setList] = useState([]);
-
+	const [show,setShow]=useState(true);
 	const updateInput = (value) => {
 		setUserInput(value);
 	};
@@ -37,15 +38,18 @@ function App() {
 		<div className="container mx-auto p-4">
 			<h1 className="text-center text-2.5xl font-bold mb-4">ADMIN</h1>
 			<hr className="mb-4" />
-			<div className="md:col-span-5 md:col-start-4">
+			<div className="border-2 w-full h-10 flex justify-center gap-5">
+				<div className=" border-2 rounded-xl text-center w-[45%] cursor-pointer" onClick={()=>setShow(true)}>
+					Movies
+				</div>
+				<div className=" border-2 rounded-xl text-center w-[45%] cursor-pointer" onClick={()=>setShow(false)}>
+					Theatres
+				</div>
+			</div>
+			{show?
+			<div>
+				<div className="md:col-span-5 md:col-start-4">
 				<div className="mb-3">
-					<input
-						className="border rounded-lg p-2 w-full"
-						placeholder="add item . . . "
-						value={userInput}
-						onChange={(event) => updateInput(event.target.value)}
-						aria-label="add something"
-					/>
 					<button
 						className="border-4 bg-blue-800 text-white px-4 py-2 mt-8 "
 						onClick={addItem}
@@ -80,6 +84,10 @@ function App() {
 					))}
 				</ul>
 			</div>
+			</div>:
+				<AddTheatre/>
+			}
+			
 		</div>
 	);
 }
