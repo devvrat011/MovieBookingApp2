@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import AddTheatre from "../../theatre";
 import MovieDescription from '../MovieDes/MovieDesc';
 
 function App() {
 	const [userInput, setUserInput] = useState("");
 	const [list, setList] = useState([]);
-
+	const [show,setShow]=useState(true);
 	const updateInput = (value) => {
 		setUserInput(value);
 	};
@@ -28,7 +29,17 @@ function App() {
 		<div className="container mx-auto p-4">
 			<h1 className="text-center text-2.5xl font-bold mb-4">ADMIN</h1>
 			<hr className="mb-4" />
-			<div className="md:col-span-5 md:col-start-4">
+			<div className="border-2 w-full h-10 flex justify-center gap-5">
+				<div className=" border-2 rounded-xl text-center w-[45%] cursor-pointer" onClick={()=>setShow(true)}>
+					Movies
+				</div>
+				<div className=" border-2 rounded-xl text-center w-[45%] cursor-pointer" onClick={()=>setShow(false)}>
+					Theatres
+				</div>
+			</div>
+			{show?
+			<div>
+				<div className="md:col-span-5 md:col-start-4">
 				<div className="mb-3">
 					<MovieDescription list={list} setList={setList}/>
 				</div>
@@ -61,6 +72,10 @@ function App() {
 					))}
 				</ul>
 			</div>
+			</div>:
+				<AddTheatre/>
+			}
+			
 		</div>
 	);
 }

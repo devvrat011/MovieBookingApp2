@@ -1,6 +1,6 @@
 import React from 'react'
 import './Navbar.css';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+// import LocationOnIcon from '@mui/icons-material/LocationOn';
 import {useNavigate} from 'react-router-dom';
 
 function Navbar() {
@@ -18,7 +18,7 @@ function Navbar() {
         </div>
         <div className='nav_loc_login'>
             <div className='nav-loc' style={{cursor: "pointer"}}>
-                <LocationOnIcon/>
+                {/* <LocationOnIcon/> */}
             </div>
             <div className='nav-login' style={{cursor: "pointer"}}>
                 <div>Sign In</div>
@@ -32,3 +32,6 @@ function Navbar() {
 }
 
 export default Navbar
+
+
+
