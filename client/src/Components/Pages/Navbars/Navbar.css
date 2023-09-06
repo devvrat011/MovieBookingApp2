@@ -29,5 +29,6 @@
     -moz-border-radius: 20px;
     border-radius: 20px;
     border: none;
+    text: black;
     padding: 0 15px; 
 }

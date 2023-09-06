@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import MovieDescription from '../MovieDes/MovieDesc';
 
 function App() {
 	const [userInput, setUserInput] = useState("");
@@ -8,17 +9,7 @@ function App() {
 		setUserInput(value);
 	};
 
-	const addItem = () => {
-		if (userInput !== "") {
-			const newItem = {
-				id: Math.random(),
-				value: userInput,
-			};
-			setList([...list, newItem]);
-			setUserInput("");
-		}
-	};
-
+	
 	const deleteItem = (id) => {
 		const updatedList = list.filter((item) => item.id !== id);
 		setList(updatedList);
@@ -39,19 +30,7 @@ function App() {
 			<hr className="mb-4" />
 			<div className="md:col-span-5 md:col-start-4">
 				<div className="mb-3">
-					<input
-						className="border rounded-lg p-2 w-full"
-						placeholder="add item . . . "
-						value={userInput}
-						onChange={(event) => updateInput(event.target.value)}
-						aria-label="add something"
-					/>
-					<button
-						className="border-4 bg-blue-800 text-white px-4 py-2 mt-8 "
-						onClick={addItem}
-					>
-						ADD Movie
-					</button>
+					<MovieDescription list={list} setList={setList}/>
 				</div>
 			</div>
 			<div className="md:col-span-5 md:col-start-4">
@@ -61,7 +40,9 @@ function App() {
 							className="list-group-item border-2 border-black rounded-2xl my-1 px-5 py-2 flex justify-between  d-flex justify-content-between"
 							key={index}
 						>
-							{item.value}
+							{item.name}
+							{item.desc}
+							{item.date}
 							<div>
 								<button
 									className="btn btn-light mr-2 bg-blue-700 text-white px-2 py-1"

@@ -14,7 +14,7 @@ function Navbar() {
             <h2>Cinematic</h2>
         </div>
         <div className='nav-search'>
-            <input className='nav-box' type = 'text' placeholder='Type to search...'/>
+            <input className='nav-box text-black' type = 'text' placeholder='Type to search...'/>
         </div>
         <div className='nav_loc_login'>
             <div className='nav-loc' style={{cursor: "pointer"}}>
