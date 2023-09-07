@@ -21,12 +21,19 @@ function MovieDes({ list, setList }) {
         }
 
     }
-
     const closeModal = () => {
         setData({ id: id });
         setOpen(o => !o);
     }
-
+    const keyDownHandler = (event) => {
+        if (event.key === 'Enter') {
+            if (data.name && data.desc && data.duration && data.date && data.url){
+                save();
+                setOpen(false);
+            }
+        }
+    }
+    document.addEventListener('keydown', keyDownHandler);
     return (
         <>
             <button onClick={() => setOpen(o => !o)}>Add Movie</button>
@@ -63,6 +70,7 @@ function MovieDes({ list, setList }) {
                                 <div className="flex gap-2 flex-col">
                                     <div>Language</div>
                                     <select onChange={(e) => setData({ ...data, lang: e.target.value })} className="p-1 border-2 border-zinc-400 rounded-lg">
+                                        <option>Choose..</option>
                                         <option>English</option>
                                         <option>Hindi</option>
                                     </select>
@@ -75,7 +83,8 @@ function MovieDes({ list, setList }) {
                             <div className="flex justify-between">
                                 <div className="flex gap-2 flex-col">
                                     <div>Genre</div>
-                                    <select onChange={(e) => setData({ ...data, genre: e.target.value })} className="p-1 border-2 border-zinc-400 rounded-lg">
+                                    <select  onChange={(e) => setData({ ...data, genre: e.target.value })} className="p-1 border-2 border-zinc-400 rounded-lg">
+                                        <option>Choose..</option>
                                         <option >Action</option>
                                         <option >Romance</option>
                                         <option >Drama</option>
