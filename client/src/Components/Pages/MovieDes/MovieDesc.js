@@ -29,7 +29,7 @@ function MovieDes({ list, setList }) {
 
     return (
         <>
-            <button onClick={() => setOpen(o => !o)}>Add Movie</button>
+            <button className="border-2 rounded-xl bg-blue-500 text-white p-2" onClick={() => setOpen(o => !o)}>Add Movie</button>
             <Popup open={open} closeOnDocumentClick onClose={closeModal} className='moviedesc-modal' modal nested>
                 {
                     close => (

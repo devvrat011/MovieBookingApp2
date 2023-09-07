@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AddTheatre from "../../theatre";
+import AddTheatre from "../TheatrePage/theatre";
 import MovieDescription from '../MovieDes/MovieDesc';
 
 function App() {
