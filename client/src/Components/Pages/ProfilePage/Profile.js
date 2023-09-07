@@ -46,28 +46,73 @@ function App() {
 			</div>
 			<div className="md:col-span-5 md:col-start-4">
 				<ul className="list-group ">
+					{(list.length) ? <div className="flex px-5 py-2">
+						<div className="w-[6%] text-center flex flex-col justify-center ">
+							Poster
+						</div>
+						<div className="w-[20%] text-center flex flex-col justify-center ">
+							Movie Name
+						</div>
+						<div className="w-[20%] text-center flex flex-col justify-center ">
+							Description
+						</div>
+						<div className="w-[8%]  text-center flex flex-col justify-center">
+							Duration
+						</div>
+						<div className="w-[8%] text-center flex flex-col justify-center  ">
+							Genre
+						</div>
+						<div className="w-[8%] text-center flex flex-col justify-center  ">
+							Language
+						</div>
+						<div className="w-[15%] text-center flex flex-col justify-center  ">
+							Release Date
+						</div>
+					</div> : <></>}
 					{list.map((item, index) => (
 						<li
 							className="list-group-item border-2 border-black rounded-2xl my-1 px-5 py-2 flex justify-between  d-flex justify-content-between"
 							key={index}
 						>
-							{item.name}
-							{item.desc}
-							{item.date}
-							<div>
+							<div className="flex w-full ">
+								<div className="w-[6%] text-center flex flex-col justify-center">
+									<img src={item.url} className="h-12 w-[80%] mx-auto "/>
+								</div>
+								<div className="w-[20%] text-center flex flex-col justify-center">
+									{item.name}
+								</div>
+								<div className="w-[20%] text-center flex flex-col justify-center">
+									{item.desc}
+								</div>
+								<div className="w-[8%] text-center flex flex-col justify-center">
+									{item.duration}
+								</div>
+								<div className="w-[8%] text-center flex flex-col justify-center">
+									{item.genre}
+								</div>
+								<div className="w-[8%] text-center flex flex-col justify-center">
+									{item.lang}
+								</div>
+								<div className="w-[15%] text-center flex flex-col justify-center">
+									{item.date}
+								</div>
+
+								<div className="flex mx-auto gap-3">
 								<button
-									className="btn btn-light mr-2 bg-blue-700 text-white px-2 py-1"
+									className="btn flex flex-col justify-center btn-light  bg-blue-700 text-white px-2"
 									onClick={() => deleteItem(item.id)}
 								>
 									Delete
 								</button>
 								<button
-									className="btn btn-light  bg-blue-700 text-white px-2 py-1"
+									className="btn flex flex-col justify-center btn-light  bg-blue-700 text-white px-2 "
 									onClick={() => editItem(index)}
 								>
 									Edit
 								</button>
 							</div>
+							</div>
+							
 						</li>
 					))}
 				</ul>
