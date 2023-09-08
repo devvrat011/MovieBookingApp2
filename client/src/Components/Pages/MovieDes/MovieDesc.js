@@ -15,7 +15,7 @@ function MovieDes({ list, setList }) {
             console.log(typeof(data.duration));
             console.log(data);
             try {
-                const response = await fetch('http://localhost:3001/movie/add', {
+                const response = await fetch('http://localhost:8000/movie/add', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json',

@@ -11,7 +11,7 @@ function App() {
 	};
 	const deleteItem =async(id) => {
 		try {
-			const response = await fetch(`http://localhost:3001/movie/${id}`, {
+			const response = await fetch(`http://localhost:8000/movie/${id}`, {
 			  method: 'DELETE',
 			  headers: {
 				'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ function App() {
 	useEffect(()=>{
 		const find=async()=>{
 			try {
-				const response = await fetch('http://localhost:3001/movie', {
+				const response = await fetch('http://localhost:8000/movie', {
 				  method: 'GET',
 				  headers: {
 					'Content-Type': 'application/json',
