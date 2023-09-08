@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import Popup from 'reactjs-popup';
-
+import Navbar from "../Navbars/Navbar";
+// import 'reactjs-popup/dist/index.css';
 const BookTicketPage = () => {
   const [modal, setModal] = useState(false);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const rows = 5;
   const cols = 5;
   const [id, setId] = useState(0);
-    const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const closeModal = () => {
-   
     setOpen(o => !o);
 }
 
@@ -26,10 +26,11 @@ const BookTicketPage = () => {
             selectedSeat.row !== row || selectedSeat.col !== col
         )
       );
-    } else {
+    } 
+    else {
       setSelectedSeats((prevSelectedSeats) => [...prevSelectedSeats, seat]);
     }
-    console.log(selectedSeats);
+   
   };
 
   const isSelectedSeat = (seat) =>
@@ -50,7 +51,7 @@ const BookTicketPage = () => {
         grid.push(
           <div
             key={c}
-            className={`w-10 h-10 border rounded-lg flex-col flex justify-center border-gray-500 text-center text-lg font-bold ${isSelected ? "bg-blue-500 text-white" : "bg-gray-300"
+            className={`w-10 h-10 shadow-2xl rounded-lg hover:scale-105 flex-col flex justify-center border-gray-500 text-center text-lg font-bold ${isSelected ? "bg-blue-500 text-white" : "bg-gray-300"
               } cursor-pointer`}
             onClick={() => toggleSeat(row, col)}
           >
@@ -64,6 +65,7 @@ const BookTicketPage = () => {
 
   return (
     <div>
+      <Navbar/>
       <div className="border-2 w-full h-28 flex flex-col justify-center px-4 font-bold text-3xl">
         Movie NAME
       </div>
@@ -87,7 +89,7 @@ const BookTicketPage = () => {
       <Popup open={open} closeOnDocumentClick onClose={closeModal} className='moviedesc-modal' modal nested>
         {
           close => (
-            <div className='flex gap-4 w-[100%] md:w-full flex-col p-10 max-w-lg mx-auto bg-white rounded-2xl shadow-lg'>
+            <div className='flex gap-4 w-[100%]  md:w-full flex-col p-10 max-w-lg mx-auto bg-white rounded-2xl shadow-lg'>
               <div className="absolute left-[90%] top-[4%]">
                 <div></div>
                 <button onClick=
@@ -100,12 +102,27 @@ const BookTicketPage = () => {
               <div className="max-w-sm mx-auto text-center grid grid-cols-5 gap-6">
                 {generateSeatsGrid()}
               </div>
-              <div className="text-center mt-4">
-                Selected Seats: {selectedSeats.length}<br></br>
-
-                {/* {selectedSeats} */}
+              {selectedSeats.length?
+              (<div className="text-center mt-4">
+              <span className="font-bold">Selected Seats :</span> {selectedSeats.length}<br></br>
+              <div className="flex gap-2 w-min  mx-auto mt-2">
+               
+              {selectedSeats.map((seat)=>{
+                return(
+                  <div >
+                      {seat.row*5+seat.col} 
+                  </div>
+                )
+              })}
 
               </div>
+              <div className="border-2 p-2 rounded-xl mt-4 font-bold w-[40%] mx-auto bg-blue-600 text-white shadow-2xl cursor-pointer hover:scale-105">
+                Pay Rs {selectedSeats.length*20}
+              </div>
+              
+
+            </div>):""}
+              
 
             </div>
           )

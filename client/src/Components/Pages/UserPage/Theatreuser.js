@@ -49,7 +49,7 @@ function Theatreuser() {
     document.addEventListener('keydown',keyDownHandler)
     return (
         <>
-            <h1>Profile</h1>
+            
             <button className="border-2 rounded-xl bg-blue-500 text-white p-2" onClick={() => setOpen(o => !o)}>Add Theatre</button>
             <Popup open={open} closeOnDocumentClick onClose={closeModal} className='moviedesc-modal' modal nested>
                 {
@@ -174,4 +174,4 @@ function Theatreuser() {
     )
 }
 
-export default Theatreuser
+export default Theatreuser;
