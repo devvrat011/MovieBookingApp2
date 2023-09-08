@@ -19,7 +19,6 @@ function MovieDes({ list, setList }) {
             setId(prev => prev + 1);
             setData({ id: id });
         }
-
     }
     const closeModal = () => {
         setData({ id: id });

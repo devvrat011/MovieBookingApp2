@@ -9,13 +9,10 @@ function App() {
 	const updateInput = (value) => {
 		setUserInput(value);
 	};
-
-	
 	const deleteItem = (id) => {
 		const updatedList = list.filter((item) => item.id !== id);
 		setList(updatedList);
 	};
-
 	const editItem = (index) => {
 		const editedTodo = prompt("Edit the todo:");
 		if (editedTodo !== null && editedTodo.trim() !== "") {
