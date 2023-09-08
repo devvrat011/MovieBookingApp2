@@ -1,17 +1,72 @@
 import React, { useEffect } from 'react'
 import "./loginSignup.scss"
+import { useState } from 'react';
 
 function LoginSignup() {
     let container;
+    const [name,setName] = useState('');
+    const [email,setEmail] = useState('');
+    const [password,setPassword] = useState('');
+    const [isusersignin,Setusersignin] = useState(false);
+    async function registerUser(event) {
+        event.preventDefault();
+        const response = await fetch('http://localhost:8000/api/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name,
+                email,
+                password,
+            }),
+        });
+        const data = await response.json();
+        if(data.status==='ok'){
+            // console.log("okk");
+            onClickSignIn();
+        }
+        else{
+            alert("Same email already exists direct login");
+            onClickSignIn();
+        }
+        console.log(data);
+    }
+    async function LogInUser(event) {
+        event.preventDefault();
+        const response = await fetch('http://localhost:8000/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email,
+                password,
+            }),
+        });
+        const data = await response.json();
+        if(data.user) {
+            console.log(data);
+            localStorage.setItem('token', data.token);
+            alert('login successful');
+            Setusersignin(true);
+            window.location.href = '/';
+        }
+        else{
+            alert('Please check  your username and password');
+        }
+        console.log(data);
+    }
     useEffect(() => {
         container = document.getElementsByClassName("login-container")[0];
-    }, [])
+    })
     const onClickSignUp = () => {
         container.classList.add("sign-up-mode");
     }
     const onClickSignIn = () => {
         container.classList.remove("sign-up-mode");
     }
+
     return (
         <div className="login-container">
             <div className="forms-container">
@@ -20,14 +75,13 @@ function LoginSignup() {
                         <h2 className="login-title">Sign in</h2>
                         <div className="login-input-field">
                             <i className="fas fa-user"></i>
-                            <input type="text" placeholder='Username' />
+                            <input onChange={(e) => {setEmail(e.target.value)}} type="text" placeholder='Username' />
                         </div>
                         <div className="login-input-field">
                             <i className="fas fa-lock"></i>
-                            <input type="password" placeholder='Password' />
+                            <input onChange={(e) => {setPassword(e.target.value)}}  type="password" placeholder='Password' />
                         </div>
-                        <input type="submit" value="Login" className="login-btn solid" />
-
+                        <button className="login-btn solid" onClick={LogInUser}>Log In</button>
                         <p className="social-text">Or Sign in with social platforms</p>
                         <div className="social-media">
                             <a href="/" className="social-icon">
@@ -48,18 +102,17 @@ function LoginSignup() {
                         <h2 className="login-title">Sign up</h2>
                         <div className="login-input-field">
                             <i className="fas fa-user"></i>
-                            <input type="text" placeholder='Username' />
+                            <input onChange={(e) => {setName(e.target.value)}} type="text" placeholder='Username' />
                         </div>
                         <div className="login-input-field">
                             <i className="fas fa-envelope"></i>
-                            <input type="email" placeholder='Email' />
+                            <input onChange={(e) => {setEmail(e.target.value)}} type="email" placeholder='Email' />
                         </div>
                         <div className="login-input-field">
                             <i className="fas fa-lock"></i>
-                            <input type="password" placeholder='Password' />
+                            <input onChange={(e) => {setPassword(e.target.value)}} type="password" placeholder='Password' />
                         </div>
-                        <input type="submit" value="Sign up" className="login-btn solid" />
-
+                        <button className="login-btn solid" onClick={registerUser}>Sign Up</button>
                         <p className="social-text">Or Sign up with social platforms</p>
                         <div className="social-media">
                             <a href="/" className="social-icon">
