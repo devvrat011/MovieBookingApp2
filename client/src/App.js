@@ -7,6 +7,7 @@ import Home from "./Components/Pages/HomePage/Home";
 import Navbar from "./Components/Pages/Navbars/Navbar";
 import Movies from "./Components/Pages/MovieCart/MovieCart";
 import Profile from "./Components/Pages/ProfilePage/Profile";
+import BookTicketPage from "./Components/Pages/BookTicketPage/BookTcketPage";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<Home/>}/>
         <Route path="/movies" element={<Movies/>}/>
         <Route path="/profile" element={<Profile/>}/>
+        <Route path="/book" element={<BookTicketPage/>}/>
         </Routes>
     </div>
   );
