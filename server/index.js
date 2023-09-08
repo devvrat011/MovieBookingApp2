@@ -7,11 +7,14 @@ const User = require('./models/user.mode');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const authenticate = require('./middleware/authMiddleware');
-
+const moviesrouter=require("./routes/movies.js");
 dotenv.config();
+
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+
 
 const PORT = process.env.PORT || 6001;
 mongoose.connect(process.env.MONGO_URL, {
@@ -22,6 +25,13 @@ mongoose.connect(process.env.MONGO_URL, {
     app.listen(PORT, ()=> console.log(`Server Port: ${PORT}`));
 })
 .catch((error) => console.log(`${error} did not connect`));
+
+app.use("/movie",moviesrouter);
+
+app.get('/', (req, res) => {
+    res.send('Server is Running! 🚀');
+});
+
 
 app.post('/api/register', async (req,res) => {
     console.log(req.body);

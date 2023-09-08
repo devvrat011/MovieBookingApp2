@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddTheatre from "../TheatrePage/theatre";
 import MovieDescription from '../MovieDes/MovieDesc';
-
+import Navbar from "../Navbars/Navbar";
 function App() {
 	const [userInput, setUserInput] = useState("");
 	const [list, setList] = useState([]);
@@ -9,21 +9,76 @@ function App() {
 	const updateInput = (value) => {
 		setUserInput(value);
 	};
-	const deleteItem = (id) => {
-		const updatedList = list.filter((item) => item.id !== id);
-		setList(updatedList);
-	};
-	const editItem = (index) => {
-		const editedTodo = prompt("Edit the todo:");
-		if (editedTodo !== null && editedTodo.trim() !== "") {
-			const updatedList = [...list];
-			updatedList[index].value = editedTodo;
-			setList(updatedList);
+	const deleteItem =async(id) => {
+		try {
+			const response = await fetch(`http://localhost:8000/movie/${id}`, {
+			  method: 'DELETE',
+			  headers: {
+				'Content-Type': 'application/json',
+			  },
+			 
+			});
+			const res="resources deleted";
+			return res;
+		}
+		catch(e){
+			console.log(e);
 		}
 	};
+	// const editItem =async(index) => {
+	// 	const editedTodo = prompt("Edit the todo:");
+	// 	if (editedTodo !== null && editedTodo.trim() !== "") {
+	// 		const updatedList = [...list];
+	// 		updatedList[index].value = editedTodo;
+	// 		setList(updatedList);
+
+
+	// 	}
+	// 	try {
+	// 		const response = await fetch(`http://localhost:3001/movie/${id}`, {
+	// 		  method: 'PUT',
+	// 		  headers: {
+	// 			'Content-Type': 'application/json',
+	// 		  },
+	// 		  body: JSON.stringify()
+	// 		});
+		
+	// 		const res = await response.json();
+	// 		// console.log(res);
+	// 		setList(res);
+	// 	}
+	// 	catch(e){
+	// 		console.log(e);
+	// 	}
+	// };
+	
+	useEffect(()=>{
+		const find=async()=>{
+			try {
+				const response = await fetch('http://localhost:8000/movie', {
+				  method: 'GET',
+				  headers: {
+					'Content-Type': 'application/json',
+				  },
+				 
+				});
+			
+				const res = await response.json();
+				// console.log(res);
+				setList(res);
+			}
+			catch(e){
+				console.log(e);
+			}
+		}
+		find();
+	})
 
 	return (
+		<div>
+			<Navbar/>
 		<div className="container mx-auto p-4">
+			  
 			<h1 className="text-center text-2.5xl font-bold mb-4">ADMIN</h1>
 			<hr className="mb-4" />
 			<div className="border-2 w-full h-10 flex justify-center gap-5">
@@ -69,7 +124,7 @@ function App() {
 					{list.map((item, index) => (
 						<li
 							className="list-group-item border-2 border-black rounded-2xl my-1 px-5 py-2 flex justify-between  d-flex justify-content-between"
-							key={index}
+							key={item._id}
 						>
 							<div className="flex w-full ">
 								<div className="w-[6%] text-center flex flex-col justify-center">
@@ -79,7 +134,7 @@ function App() {
 									{item.name}
 								</div>
 								<div className="w-[20%] text-center flex flex-col justify-center">
-									{item.desc}
+									{item.description}
 								</div>
 								<div className="w-[8%] text-center flex flex-col justify-center">
 									{item.duration}
@@ -88,7 +143,7 @@ function App() {
 									{item.genre}
 								</div>
 								<div className="w-[8%] text-center flex flex-col justify-center">
-									{item.lang}
+									{item.language}
 								</div>
 								<div className="w-[15%] text-center flex flex-col justify-center">
 									{item.date}
@@ -97,13 +152,13 @@ function App() {
 								<div className="flex mx-auto gap-3">
 								<button
 									className="btn flex flex-col justify-center btn-light  bg-blue-700 text-white px-2"
-									onClick={() => deleteItem(item.id)}
+									onClick={() => deleteItem(item._id)}
 								>
 									Delete
 								</button>
 								<button
 									className="btn flex flex-col justify-center btn-light  bg-blue-700 text-white px-2 "
-									onClick={() => editItem(index)}
+									// onClick={() => editItem(item._id)}
 								>
 									Edit
 								</button>
@@ -118,6 +173,7 @@ function App() {
 				<AddTheatre/>
 			}
 			
+		</div>
 		</div>
 	);
 }
