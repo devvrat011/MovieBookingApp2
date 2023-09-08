@@ -1,7 +1,12 @@
 import React from 'react'
 import "./MovieCart.css"
+import {useNavigate} from 'react-router-dom';
 
 function MovieCart() {
+    const navigate = useNavigate();
+    const NavigateToBookTicket = () => {
+        navigate('/book');
+    }
   return (
     <div>
         <div className='image_container'>
@@ -17,7 +22,7 @@ function MovieCart() {
                     </div>
                     <div>English,Hindi</div>
                     <div>2h 14m • Action,Adventure</div>
-                    <button>Book Tickets</button>
+                    <button onClick={NavigateToBookTicket}>Book Tickets</button>
                 </div>
             </div>
             <div>
