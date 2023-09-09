@@ -89,7 +89,7 @@ const BookTicketPage = () => {
       <Popup open={open} closeOnDocumentClick onClose={closeModal} className='moviedesc-modal' modal nested>
         {
           close => (
-            <div className='flex gap-4 w-[100%]  md:w-full flex-col p-10 max-w-lg mx-auto bg-white rounded-2xl shadow-lg'>
+            <div className='flex gap-4 w-[100%]  md:w-[100%] flex-col p-10 mx-auto bg-white rounded-2xl shadow-lg'>
               <div className="absolute left-[90%] top-[4%]">
                 <div></div>
                 <button onClick=
@@ -99,9 +99,11 @@ const BookTicketPage = () => {
                   <CloseIcon style={{ color: "grey" }} />
                 </button>
               </div>
-              <div className="max-w-sm mx-auto text-center grid grid-cols-5 gap-6">
+              <div className="max-w-sm mx-auto text-center grid grid-cols-5 gap-4">
                 {generateSeatsGrid()}
               </div>
+              <div className="text-center font-bold">Screen</div>
+              <div className="h-1.5 bg-gray-500 rounded-br-[900%] rounded-bl-[900%]"></div>
               {selectedSeats.length?
               (<div className="text-center mt-4">
               <span className="font-bold">Selected Seats :</span> {selectedSeats.length}<br></br>
@@ -110,17 +112,15 @@ const BookTicketPage = () => {
               {selectedSeats.map((seat)=>{
                 return(
                   <div >
-                      {seat.row*5+seat.col} 
+                      {(seat.row-1)*5+seat.col} 
                   </div>
                 )
               })}
-
               </div>
               <div className="border-2 p-2 rounded-xl mt-4 font-bold w-[40%] mx-auto bg-blue-600 text-white shadow-2xl cursor-pointer hover:scale-105">
-                Pay Rs {selectedSeats.length*20}
+                Pay Rs {selectedSeats.length*100}
               </div>
               
-
             </div>):""}
               
 
