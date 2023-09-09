@@ -35,7 +35,6 @@ function MovieCart() {
                     <button onClick={NavigateToBookTicket}>Book Tickets</button>
                 </div>
             </div>
-           
         </div>
         <div className='about_movie'>
             <h2>About the movie</h2>
