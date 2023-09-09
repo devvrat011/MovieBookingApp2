@@ -11,7 +11,7 @@ function Home() {
   return (
     <div>
         <button onClick={navigateToMovies}>
-          <img src='https://assets-in.bmscdn.com/iedb/movies/images/mobile/thumbnail/xlarge/fast-x-et00122562-1683110461.jpg'/>
+          <img src='https://assets-in.bmscdn.com/iedb/movies/images/mobile/thumbnail/xlarge/jawan-et00330424-1693892482.jpg'/>
         </button>
     </div>
   )
