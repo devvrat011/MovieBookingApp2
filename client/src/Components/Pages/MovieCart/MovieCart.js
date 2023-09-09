@@ -1,8 +1,16 @@
 import React from 'react'
 import "./MovieCart.css"
+<<<<<<< HEAD
 import Img from "../../Images/1.jpeg"
+=======
+import {useNavigate} from 'react-router-dom';
+>>>>>>> 154b0dcbb2aa303871ee22daf45f37c99bad3b1c
 
 function MovieCart() {
+    const navigate = useNavigate();
+    const NavigateToBookTicket = () => {
+        navigate('/book');
+    }
   return (
     <div>
         <div className='image_container'>
@@ -26,7 +34,13 @@ function MovieCart() {
                         <div class="text_size">2h 14m • Action,Adventure</div>
                         <a href='https://youtu.be/COv52Qyctws?si=ETAYDIRMZ60JAIDj' target='/' className='Trailer'><i>Watch Trailer</i></a>
                     </div>
+<<<<<<< HEAD
                     <button className='bookTicket'>Book Tickets</button>
+=======
+                    <div>English,Hindi</div>
+                    <div>2h 14m • Action,Adventure</div>
+                    <button onClick={NavigateToBookTicket}>Book Tickets</button>
+>>>>>>> 154b0dcbb2aa303871ee22daf45f37c99bad3b1c
                 </div>
             </div>
            
