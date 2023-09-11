@@ -11,12 +11,8 @@ const {
 
 router.post("/add",addMovie)
 router.put("/:id", updateMovie);
-
 router.delete("/:id", deleteMovie);
-
-
 router.get("/:id", getMovie);
-
 router.get("/", getMovies);
 
 
