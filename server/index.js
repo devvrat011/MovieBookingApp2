@@ -7,8 +7,11 @@ const User = require('./models/user.mode');
 
 const authenticate = require('./middleware/authMiddleware');
 const moviesrouter=require("./routes/movies.js");
+const theatrerouter = require("./routes/theatre");
+
 const usersrouter=require("./routes/users.js");
 const bookingrouter=require("./routes/booking.js");
+
 dotenv.config();
 
 const app = express();
@@ -26,6 +29,7 @@ mongoose.connect(process.env.MONGO_URL, {
 .catch((error) => console.log(`${error} did not connect`));
 
 app.use("/movie",moviesrouter);
+app.use("/theatre",theatrerouter);
 
 app.get('/', (req, res) => {
     res.send('Server is Running! 🚀');
@@ -33,7 +37,9 @@ app.get('/', (req, res) => {
 
 app.use('/api',usersrouter);
 
+
 app.use('/booking',bookingrouter);
+
 app.post('/api/getuser', authenticate, async (req, res) => {
     const user = await User.findById(req.user.id).select("-password");
     return res.json(user);

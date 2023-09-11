@@ -20,7 +20,6 @@ function MovieCart() {
                         <div class="text_size"><h2>⭐ 8.9/10</h2></div>
                         <div className="text_size rating">Add your rating
                         <button className='rating rating_button'>rate now</button>
-                       
                         </div>
                         <div>
                         <div class="text_size">2D,3D,MX4D,3D SCREEN X</div>

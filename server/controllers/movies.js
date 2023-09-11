@@ -4,18 +4,15 @@ const Movie= require('../models/movies.js');
 async function addMovie(req, res) {
     try {
       const {name,description,duration,language,date,genre,url} = req.body;
-  
       const existingMovie = await Movie.findOne({name});
       if (existingMovie) {
         return res.status(409).json({ error: 'Movie already exists' });
-      }    
+      }
       const newMovie = new Movie({name,description,duration,language,date,genre,url});
-  
       await newMovie.save();
-  
       res.json({ message:'Movie created successfully'});
-      
     } catch (error) {
+        console.log(error);
       res.status(500).json({ error});
     }
   }
@@ -32,6 +29,7 @@ const updateMovie = async (req, res, next) => {
         next(err);
     }
 };
+
 const deleteMovie = async (req, res, next) => {
     try {
         await movieSchema.findByIdAndDelete(req.params.id);
@@ -40,6 +38,7 @@ const deleteMovie = async (req, res, next) => {
         next(err);
     }
 };
+
 const getMovie = async (req, res, next) => {
     try {
         const Movie = await movieSchema.findById(req.params.id);

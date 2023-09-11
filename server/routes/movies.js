@@ -15,5 +15,4 @@ router.delete("/:id", deleteMovie);
 router.get("/:id", getMovie);
 router.get("/", getMovies);
 
-
 module.exports=router;
