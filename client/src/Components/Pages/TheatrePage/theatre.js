@@ -153,7 +153,6 @@ const AddTheatre = () => {
 					Status
 				</div>
 				<div className=" w-[16%] text-center flex flex-col justify-center h-10">
-					
 				</div>
 			</div>
         <div className="border-2 max-h-32 overflow-y-auto">

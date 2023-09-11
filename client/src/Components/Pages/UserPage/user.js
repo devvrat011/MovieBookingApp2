@@ -27,7 +27,6 @@ function User() {
 			{show?
 			<div>
                 <Booking/>
-			
 			</div>:
 				<Theatreuser/>
 			}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import AddTheatre from "../TheatrePage/theatre";
 import MovieDescription from '../MovieDes/MovieDesc';
 import Navbar from "../Navbars/Navbar";
+
 function App() {
 	const [userInput, setUserInput] = useState("");
 	const [list, setList] = useState([]);
@@ -16,7 +17,6 @@ function App() {
 			  headers: {
 				'Content-Type': 'application/json',
 			  },
-			 
 			});
 			const res="resources deleted";
 			return res;
@@ -31,8 +31,6 @@ function App() {
 	// 		const updatedList = [...list];
 	// 		updatedList[index].value = editedTodo;
 	// 		setList(updatedList);
-
-
 	// 	}
 	// 	try {
 	// 		const response = await fetch(`http://localhost:3001/movie/${id}`, {
@@ -60,9 +58,7 @@ function App() {
 				  headers: {
 					'Content-Type': 'application/json',
 				  },
-				 
 				});
-			
 				const res = await response.json();
 				// console.log(res);
 				setList(res);

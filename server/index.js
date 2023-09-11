@@ -8,6 +8,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const authenticate = require('./middleware/authMiddleware');
 const moviesrouter=require("./routes/movies.js");
+const theatrerouter = require("./routes/theatre");
+
 dotenv.config();
 
 const app = express();
@@ -27,17 +29,18 @@ mongoose.connect(process.env.MONGO_URL, {
 .catch((error) => console.log(`${error} did not connect`));
 
 app.use("/movie",moviesrouter);
+app.use("/theatre",theatrerouter);
 
 app.get('/', (req, res) => {
     res.send('Server is Running! 🚀');
 });
 
 
+
 app.post('/api/register', async (req,res) => {
     console.log(req.body);
     try {
         const salt = await bcrypt.genSalt(10);
-        
         const securedPassword = await bcrypt.hash(req.body.password, salt);
         await User.create({
             name: req.body.name,
