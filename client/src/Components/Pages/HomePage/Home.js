@@ -1,10 +1,13 @@
-import React,{useState} from 'react'
+import React,{useContext, useState} from 'react'
 import {useNavigate} from 'react-router-dom';
 import Navbar from "../Navbars/Navbar";
 import { useEffect } from 'react';
+import context from '../../../Context/context';
 
 
 function Home() {
+  const { user } = useContext(context);
+  console.log(user);
   const navigate = useNavigate();
   const [isusersignin,Setusersignin] = useState(false);
   const [isprofilename,Setprofilename] = useState('Profile');
