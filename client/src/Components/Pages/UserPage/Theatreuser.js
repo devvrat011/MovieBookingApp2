@@ -1,10 +1,13 @@
-import React, { useContext} from 'react'
+
+import React, { useEffect,useContext } from 'react'
+
 import { useState } from 'react';
 import Popup from 'reactjs-popup';
 import CloseIcon from '@mui/icons-material/Close';
 import context from '../../../Context/context';
 
 function Theatreuser() {
+    const {user} = useContext(context);
     const [data, setData] = useState({ name: "", address: "", number: "", email: "" });
     const [open, setOpen] = useState(false);
     const {list} = useContext(context);
@@ -18,12 +21,58 @@ function Theatreuser() {
                 },
             });
             const res = "resources deleted";
+            user.theatreOwned = user.theatreOwned.filter(theatreId => theatreId !== id);
+            const deletedUserData = {
+                ...user,
+                theatreOwned: user.theatreOwned,
+            };
+            const updateUserResponse = await fetch(`http://localhost:8000/api/update/${user._id}`, {
+                    method: 'PUT', 
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(deletedUserData),
+                });      
+                console.log(await updateUserResponse.json())      
             return res;
         }
         catch (e) {
             console.log(e);
         }
     };
+
+    useEffect(() => {
+        const User = async () => {
+            try {
+                console.log(user);
+                const size=await user?.theatreOwned;
+                console.log(size);
+    //             console.log(user);
+                // for(let i=0;i<size;i++){
+                //     const id=await user.theatreOwned[i];
+                //     console.log(id);
+                // }
+    //             for(let i=0;i<user?.theatreOwned?.length;i++){
+    //                 const id=user?.theatreOwned[i];
+                    
+    //                 const response = await fetch(`http://localhost:8000/theatre/${id}`, {
+    //                 method: 'GET',
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                 },
+    //             });
+    //             const res = await response.json();
+    //             setList(...list,res);
+    //             }
+                
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }
+        User();
+    })
+
 
     const editItem = (index) => {
         const editedTodo = prompt("Edit the todo:");
@@ -32,7 +81,10 @@ function Theatreuser() {
             updatedList[index].value = editedTodo;
         }
     };
+
+
     const save = async () => {
+        
         if (data.name && data.email && data.address && data.number) {
             try {
                 const response = await fetch('http://localhost:8000/theatre/add', {
@@ -43,11 +95,30 @@ function Theatreuser() {
                     body: JSON.stringify(data),
                 });
                 const res = await response.json();
+                console.log(res);  
+                user.theatreOwned.push(res.newTheatre._id);
+                const updatedUserData = {
+                    ...user,
+                    theatreOwned: user.theatreOwned,
+                };
+                const updateUserResponse = await fetch(`http://localhost:8000/api/update/${user._id}`, {
+                    method: 'PUT', 
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedUserData),
+                });      
+                console.log(await updateUserResponse.json())      
             }
+            
             catch (e) {
                 console.log(e);
             }
         }
+       
+
+       
+        
     }
     const closeModal = () => {
         setOpen(o => !o);

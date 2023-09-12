@@ -10,7 +10,10 @@ async function addMovie(req, res) {
       }
       const newMovie = new Movie({name,description,duration,language,date,genre,url});
       await newMovie.save();
-      res.json({ message:'Movie created successfully'});
+      res.json({ 
+        message:'Movie created successfully',
+        newMovie
+    });
     } catch (error) {
         console.log(error);
       res.status(500).json({ error});

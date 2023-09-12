@@ -4,11 +4,17 @@ import Navbar from "../Navbars/Navbar";
 
 
 function Home() {
+
+  
+
+  console.log(user);
+
   const navigate = useNavigate();
   const navigateToMovies = () => {
     navigate('/movies');
   }
-  
+
+
   return (
     <div>
         <Navbar/>
