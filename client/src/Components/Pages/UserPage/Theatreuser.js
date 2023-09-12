@@ -1,4 +1,6 @@
+
 import React, { useEffect,useContext } from 'react'
+
 import { useState } from 'react';
 import Popup from 'reactjs-popup';
 import CloseIcon from '@mui/icons-material/Close';
@@ -7,9 +9,9 @@ import context from '../../../Context/context';
 function Theatreuser() {
     const {user} = useContext(context);
     const [data, setData] = useState({ name: "", address: "", number: "", email: "" });
-    const [list, setList] = useState([]);
     const [open, setOpen] = useState(false);
-
+    const {list} = useContext(context);
+    
     const deleteItem = async (id) => {
         try {
             const response = await fetch(`http://localhost:8000/theatre/${id}`, {
@@ -38,6 +40,7 @@ function Theatreuser() {
             console.log(e);
         }
     };
+
     useEffect(() => {
         const User = async () => {
             try {
@@ -70,12 +73,12 @@ function Theatreuser() {
         User();
     })
 
+
     const editItem = (index) => {
         const editedTodo = prompt("Edit the todo:");
         if (editedTodo !== null && editedTodo.trim() !== "") {
             const updatedList = [...list];
             updatedList[index].value = editedTodo;
-            setList(updatedList);
         }
     };
 
@@ -118,7 +121,6 @@ function Theatreuser() {
         
     }
     const closeModal = () => {
-        // setData({ id: id });
         setOpen(o => !o);
     }
     const onKeyDownHandler = (e) => {
@@ -129,7 +131,6 @@ function Theatreuser() {
     }
     return (
         <>
-
             <button className="border-2 rounded-xl bg-blue-500 text-white p-2" onClick={() => setOpen(o => !o)}>Add Theatre</button>
             <Popup open={open} closeOnDocumentClick onClose={closeModal} className='moviedesc-modal' modal nested>
                 {

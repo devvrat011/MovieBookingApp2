@@ -1,81 +1,33 @@
-
-import React, { useState } from "react";
-
-let data = [
-  {
-    id: "1",
-    name: "theatre1",
-    address: "hdfdjf",
-	phone: "hdfdjf",
-	email: "hdfdjf",
-	status: false,
-  },
-  {
-    id: "1",
-    name: "theatre1",
-    address: "hdfdjf",
-	phone: "hdfdjf",
-	email: "hdfdjf",
-	status: false,
-  },
-  {
-    id: "1",
-    name: "theatre1",
-    address: "hdfdjf",
-	phone: "hdfdjf",
-	email: "hdfdjf",
-	status: false,
-  },
-  {
-    id: "1",
-    name: "theatre1",
-    address: "hdfdjf",
-	phone: "hdfdjf",
-	email: "hdfdjf",
-	status: false,
-  },
-  {
-    id: "1",
-    name: "theatre1",
-    address: "hdfdjf",
-	phone: "hdfdjf",
-	email: "hdfdjf",
-	status: false,
-  },
-  {
-    id: "1",
-    name: "theatre1",
-    address: "hdfdjf",
-	phone: "hdfdjf",
-	email: "hdfdjf",
-	status: false,
-  },
-
-];
+import React, { useState, useEffect, useContext } from "react";
+import context from "../../../Context/context";
 
 const AddTheatre = () => {
   const [approve, setApprove] = useState([]);
+  const {list} = useContext(context);
   
-  const approveFun = (idx) => {
-    
-    const itemToApprove = data[idx];
-    const updatedData = data.filter((_, index) => index !== idx);
-	itemToApprove.status=true;
-    setApprove((prevApprove) => [...prevApprove, itemToApprove]);
-
-    data = updatedData;
+  const approveFun =async(idx) => {
+	try {
+		const response = await fetch(`http://localhost:8000/theatre/${idx}`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(list),
+		});
+		const res = await response.json();
+	}
+	catch (e) {
+		console.log(e);
+	}
   };
 
   const deapproveFun = (idx) => {
-    const itemToDeapprove = approve[idx];
-    const updatedApprove = approve.filter((_, index) => index !== idx);
+    let updatedApprove = approve.filter((_, index) => index !== idx);
     setApprove(updatedApprove);
-    
   };
 
   return (
     <div>
-    
       <div className="w-full h-min p-2 mt-[5%]">
         <div className="font-bold text-lg">Requests</div>
         <div>
@@ -96,13 +48,12 @@ const AddTheatre = () => {
 					Status
 				</div>
 				<div className=" w-[16%] text-center flex flex-col justify-center h-10">
-					
 				</div>
 			</div>
 			<div className="border-2 max-h-32 overflow-y-auto">
 
 
-          {data.map((item, index) => {
+          {list.map((item, index) => {
             return (
             
 			<div key={index} className="w-full  flex justify-center gap-4">
@@ -113,22 +64,20 @@ const AddTheatre = () => {
 				{item.address}	
 			</div>
 			<div className=" w-[16%] text-center flex flex-col justify-center h-10">
-				{item.phone}
+				{item.number}
 			</div>
 			<div className=" w-[16%] text-center flex flex-col justify-center h-10">
 				{item.email}
 			</div>
 			<div className=" w-[16%] text-center flex flex-col justify-center h-10">
-				{item.status?"Approved":"Pending"}
+				Pending
 			</div>
 			<div className=" w-[16%] text-center flex flex-col justify-center h-10">
-			<button className="border-2 rounded-xl" onClick={() => approveFun(index)}>
+			<button className="border-2 rounded-xl" onClick={() => approveFun(index,item._id)}>
                   Approve
             </button>
 			</div>
-			
 		</div>
-		
             );
           })}
 		  </div>
@@ -156,10 +105,9 @@ const AddTheatre = () => {
 				</div>
 			</div>
         <div className="border-2 max-h-32 overflow-y-auto">
-          {approve.map((item, index) => {
+          {approve.map((item) => {
             return (
-            
-			<div key={index} className="w-full  flex justify-center gap-4">
+			<div className="w-full  flex justify-center gap-4">
 			<div className=" w-[16%] text-center flex flex-col justify-center h-10">
 				{item.name}
 			</div>
@@ -167,16 +115,16 @@ const AddTheatre = () => {
 				{item.address}	
 			</div>
 			<div className=" w-[16%] text-center flex flex-col justify-center h-10">
-				{item.phone}
+				{item.number}
 			</div>
 			<div className=" w-[16%] text-center flex flex-col justify-center h-10">
 				{item.email}
 			</div>
 			<div className=" w-[16%] text-center flex flex-col justify-center h-10">
-				{item.status?"Approved":"Pending"}
+				Approved
 			</div>
 			<div className=" w-[16%] text-center flex flex-col justify-center h-10">
-			<button className="border-2 rounded-xl" onClick={() => deapproveFun(index)}>
+			<button className="border-2 rounded-xl" onClick={() => deapproveFun(item._id)}>
                   Deapprove
             </button>
 			</div>

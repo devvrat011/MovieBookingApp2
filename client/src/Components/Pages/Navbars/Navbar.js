@@ -1,26 +1,33 @@
 import React from 'react'
 import './Navbar.css';
 import {useNavigate} from 'react-router-dom';
+import {useContext} from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import context from '../../../Context/context';
 
-function Navbar({isusersignin,isprofilename,isAdmin}) {
+function Navbar() {
     const navigate = useNavigate();
+    let { isusersignin, isprofilename,isAdmin } = useContext(context);
     const navigateToUser = () => {
         navigate('/user');
     }
     const navigateToProfile = () => {
-        if(!isAdmin){
+        if(!isAdmin && isusersignin){
             navigateToUser();
         }
-        else
+        else if(isusersignin)
         navigate('/admin');
+        else{
+            alert("Sign In first");
+            navigateToLogin();
+        }
     }
     const navigateToHome = () => {
         navigate('/');
     }
     const SignOuttoHome = () => {
         localStorage.removeItem('token');
-        console.log("hello");
+        navigateToHome();
         window.location.reload();
     }
     const navigateToLogin = () => {
