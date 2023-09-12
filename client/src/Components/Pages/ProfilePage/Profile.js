@@ -167,8 +167,7 @@ function App() {
 			</div>
 			</div>:
 				<AddTheatre/>
-			}
-			
+			}	
 		</div>
 		</div>
 	);

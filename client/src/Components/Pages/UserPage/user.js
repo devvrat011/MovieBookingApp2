@@ -1,12 +1,8 @@
 import React, { useState } from "react";
-import AddTheatre from "../TheatrePage/theatre";
-import MovieDescription from '../MovieDes/MovieDesc';
 import Navbar from "../Navbars/Navbar";
-import Theatreuser from "./Theatreuser"
+import Theatreuser from "./Theatreuser";
 import Booking from "./Bookings";
 function User() {
-
-	const [list, setList] = useState([]);
 	const [show,setShow]=useState(true);
 
 	return (
