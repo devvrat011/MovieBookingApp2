@@ -21,6 +21,10 @@ const theatreSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    status:{
+        type:Boolean,
+        default:false,
+    }
 });
 
 module.exports = mongoose.model('Theatre', theatreSchema);
