@@ -10,7 +10,7 @@ async function addTheatre(req, res) {
         }
         const newTheatre = new Theatre({name,address,number,email});
         await newTheatre.save();
-        res.json({ message:'Theatre created successfully'});
+        res.json({ message:'Theatre created successfully',newTheatre});
     } catch (error) {
         res.status(500).json({ error});
     }

@@ -1,12 +1,12 @@
-const bookingSchema= require("../models/movies.js");
-const Booking= require('../models/movies.js');
+const bookingSchema= require("../models/booking.js");
+const Booking= require('../models/booking.js');
 
 async function addBooking(req, res) {
     try {
         const {name,theatre,date,time,amount} = req.body;
     
           
-        const newBooking = new Movie({name,theatre,date,time,amount});
+        const newBooking = new Booking({name,theatre,date,time,amount});
     
         await newBooking.save();
     
@@ -14,6 +14,7 @@ async function addBooking(req, res) {
         
       } catch (error) {
         res.status(500).json({ error});
+        console.log(error);
       }
 }
 
