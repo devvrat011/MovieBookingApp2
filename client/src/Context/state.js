@@ -11,6 +11,42 @@ const ProviderState = ({ children }) => {
     const [isAdmin,setAdmin] = useState(false);
     const [list,setList] = useState([]);
 
+    const deleteTheatre=async(id)=>{
+        const response = await fetch(`http://localhost:8000/theatre/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+       
+    });
+    const res = "resources deleted";
+    }
+    const updateUser=async(id,deletedUserData)=>{
+      const updateUserResponse = await fetch(`http://localhost:8000/api/update/${id}`, {
+                        method: 'PUT', 
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(deletedUserData),
+      });  
+      return updateUserResponse;
+    }
+    const AddTheatre=async(data)=>{
+      try{
+        const response = await fetch('http://localhost:8000/theatre/add', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+      });
+      return await response.json();
+      }
+      catch(e){
+        console.log(e);
+      }
+     
+    }
     useEffect( () => {
         const fetchUser = async () => {
           const token = localStorage.getItem('token');
@@ -33,7 +69,7 @@ const ProviderState = ({ children }) => {
               if(user.email === "devvratgupta123@gmail.com" || user.email=== "pratikgupta123@gmail.com"){
                 setAdmin(true);
               }
-              console.log(user);
+              
             }
           }
         }
@@ -57,7 +93,7 @@ const ProviderState = ({ children }) => {
         User();
     })
     return (
-        <context.Provider value={{ isusersignin, isAdmin, isprofilename, list,user }}>
+        <context.Provider value={{ isusersignin, isAdmin, isprofilename, list,user,AddTheatre,deleteTheatre,updateUser}}>
 
             { children }
         </context.Provider>

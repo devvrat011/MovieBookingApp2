@@ -7,7 +7,7 @@ function Home() {
 
   
 
-  console.log(user);
+  
 
   const navigate = useNavigate();
   const navigateToMovies = () => {

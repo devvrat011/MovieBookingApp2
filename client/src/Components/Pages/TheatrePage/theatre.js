@@ -21,10 +21,24 @@ const AddTheatre = () => {
 	}
   };
 
+
   const deapproveFun = (idx) => {
     let updatedApprove = approve.filter((_, index) => index !== idx);
     setApprove(updatedApprove);
   };
+
+  useEffect(() => {
+	const Theatre= async () => {
+		try {
+			
+		}
+		catch (e) {
+			console.log(e);
+		}
+	}
+	Theatre();
+},[])
+
 
   return (
     <div>

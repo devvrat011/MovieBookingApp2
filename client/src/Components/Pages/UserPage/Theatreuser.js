@@ -7,34 +7,27 @@ import CloseIcon from '@mui/icons-material/Close';
 import context from '../../../Context/context';
 
 function Theatreuser() {
-    const {user} = useContext(context);
+    const {user,AddTheatre,deleteTheatre,updateUser} = useContext(context);
     const [data, setData] = useState({ name: "", address: "", number: "", email: "" });
     const [open, setOpen] = useState(false);
-    const {list} = useContext(context);
-    
+
+    const [listdata,setListData]=useState([]);
     const deleteItem = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8000/theatre/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            const res = "resources deleted";
-            user.theatreOwned = user.theatreOwned.filter(theatreId => theatreId !== id);
-            const deletedUserData = {
-                ...user,
-                theatreOwned: user.theatreOwned,
-            };
-            const updateUserResponse = await fetch(`http://localhost:8000/api/update/${user._id}`, {
-                    method: 'PUT', 
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(deletedUserData),
-                });      
-                console.log(await updateUserResponse.json())      
-            return res;
+            deleteTheatre(id);
+            if(user){
+                user.theatreOwned = user.theatreOwned.filter(theatreId => theatreId !== id);
+                
+                const deletedUserData = {
+                    ...user,
+                    theatreOwned: user.theatreOwned,
+                };
+                const updateUserResponse=await updateUser(user._id,deletedUserData)
+                setListData(prevListData => prevListData.filter(theater => theater._id !== id));
+                console.log(await updateUserResponse.json());
+                
+            }
+           
         }
         catch (e) {
             console.log(e);
@@ -44,82 +37,62 @@ function Theatreuser() {
     useEffect(() => {
         const User = async () => {
             try {
-                console.log(user);
                 const size=await user?.theatreOwned;
-                console.log(size);
-    //             console.log(user);
-                // for(let i=0;i<size;i++){
-                //     const id=await user.theatreOwned[i];
-                //     console.log(id);
-                // }
-    //             for(let i=0;i<user?.theatreOwned?.length;i++){
-    //                 const id=user?.theatreOwned[i];
-                    
-    //                 const response = await fetch(`http://localhost:8000/theatre/${id}`, {
-    //                 method: 'GET',
-    //                 headers: {
-    //                     'Content-Type': 'application/json',
-    //                 },
-    //             });
-    //             const res = await response.json();
-    //             setList(...list,res);
-    //             }
-                
+                const fetchedData = [];
+                if(size?.length>0){
+                    for (const id of size) {
+                        const response = await fetch(`http://localhost:8000/theatre/${id}`, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        });
+                        const res = await response.json();
+                       
+                        fetchedData.push(res);
+                    }
+    
+                    setListData(fetchedData);  
+                }
+                       
             }
             catch (e) {
                 console.log(e);
             }
         }
         User();
-    })
-
-
-    const editItem = (index) => {
-        const editedTodo = prompt("Edit the todo:");
-        if (editedTodo !== null && editedTodo.trim() !== "") {
-            const updatedList = [...list];
-            updatedList[index].value = editedTodo;
-        }
-    };
+    },[])
+  
 
 
     const save = async () => {
         
         if (data.name && data.email && data.address && data.number) {
             try {
-                const response = await fetch('http://localhost:8000/theatre/add', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                });
-                const res = await response.json();
+              
+                const res=await AddTheatre(data);
+             
                 console.log(res);  
                 user.theatreOwned.push(res.newTheatre._id);
                 const updatedUserData = {
                     ...user,
                     theatreOwned: user.theatreOwned,
                 };
-                const updateUserResponse = await fetch(`http://localhost:8000/api/update/${user._id}`, {
-                    method: 'PUT', 
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(updatedUserData),
-                });      
-                console.log(await updateUserResponse.json())      
+                const updateUserResponse=await updateUser(user._id,updatedUserData)
+                 
+                console.log(await updateUserResponse.json());
+                setListData(prevListData => [...prevListData, res.newTheatre]);   
             }
             
             catch (e) {
                 console.log(e);
             }
         }
-       
-
-       
+        
+     
         
     }
+    
     const closeModal = () => {
         setOpen(o => !o);
     }
@@ -131,6 +104,7 @@ function Theatreuser() {
     }
     return (
         <>
+        
             <button className="border-2 rounded-xl bg-blue-500 text-white p-2" onClick={() => setOpen(o => !o)}>Add Theatre</button>
             <Popup open={open} closeOnDocumentClick onClose={closeModal} className='moviedesc-modal' modal nested>
                 {
@@ -174,8 +148,8 @@ function Theatreuser() {
                                         Cancel
                                     </div>
                                     <div className="cursor-pointer" onClick={() => {
-                                        save()
-                                            ; close();
+                                        save();
+                                        close();
                                     }}>
                                         Save
                                     </div>
@@ -187,7 +161,7 @@ function Theatreuser() {
             </Popup>
             <div className="md:col-span-5 md:col-start-4">
                 <ul className="list-group ">
-                    {(list.length) ? <div className="flex px-5 py-2">
+                    {(listdata?.length) ? <div className="flex px-5 py-2">
                         <div className="w-[10%] text-center flex flex-col justify-center ">
                             Name
                         </div>
@@ -207,26 +181,26 @@ function Theatreuser() {
                             Action
                         </div>
                     </div> : <></>}
-                    {list.map((item, index) => (
+                    {listdata?.map((item, index) => (
                         <li
                             className="list-group-item border-2 border-black rounded-2xl my-1 px-5 py-2 flex justify-between  d-flex justify-content-between"
                             key={index}
                         >
                             <div className="flex w-full ">
                                 <div className="w-[10%] text-center flex flex-col justify-center ">
-                                    {item.name}
+                                    {item?.name}
                                 </div>
                                 <div className="w-[20%] text-center flex flex-col justify-center ">
-                                    {item.address}
+                                    {item?.address}
                                 </div>
                                 <div className="w-[20%] text-center flex flex-col justify-center ">
-                                    {item.number}
+                                    {item?.number}
                                 </div>
                                 <div className="w-[20%] text-center flex flex-col justify-center">
-                                    {item.email}
+                                    {item?.email}
                                 </div>
                                 <div className="w-[20%] text-center flex flex-col justify-center">
-                                    Pending
+                                    {item?.status ? "Approved":"Pending"}
                                 </div>
                                 <div className="flex mx-auto gap-3">
                                     <button
@@ -237,7 +211,7 @@ function Theatreuser() {
                                     </button>
                                     <button
                                         className="btn flex flex-col justify-center btn-light  bg-blue-700 text-white px-2 "
-                                        onClick={() => editItem(index)}
+                                        // onClick={() => editItem(index)}
                                     >
                                         Edit
                                     </button>
@@ -246,8 +220,9 @@ function Theatreuser() {
                         </li>
                     ))}
                 </ul>
-            </div>
-        </>
+            </div> 
+            
+        </> 
     )
 }
 
