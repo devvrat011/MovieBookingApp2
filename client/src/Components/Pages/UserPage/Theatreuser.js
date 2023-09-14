@@ -7,8 +7,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import context from '../../../Context/context';
 
 function Theatreuser() {
+
     const {user,AddTheatre,deleteTheatre,updateUser} = useContext(context);
     const [data, setData] = useState({ name: "", address: "", number: "", email: "" });
+
+
     const [open, setOpen] = useState(false);
 
     const [listdata,setListData]=useState([]);

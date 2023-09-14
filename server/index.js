@@ -37,7 +37,6 @@ app.get('/', (req, res) => {
 
 app.use('/api',usersrouter);
 
-
 app.use('/booking',bookingrouter);
 
 app.post('/api/getuser', authenticate, async (req, res) => {
