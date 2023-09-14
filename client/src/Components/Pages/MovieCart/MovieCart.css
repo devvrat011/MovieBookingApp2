@@ -2,7 +2,17 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-image: url('https://www.bollywoodhungama.com/wp-content/uploads/2021/07/Jawan-cover-image1.jpg');
+    background-image: url('https://images.unsplash.com/photo-1460355976672-71c3f0a4bdac?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 2rem;
+    font-size: 1.5rem;
+}
+.image_removed{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -78,8 +88,5 @@
     border-radius: 6px;
     background: #ae7fec;
     transition: all 0.2s ease;
-}
-.bookTicket:active{
-
 }
 

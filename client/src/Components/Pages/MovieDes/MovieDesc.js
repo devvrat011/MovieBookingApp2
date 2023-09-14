@@ -1,32 +1,19 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Popup from 'reactjs-popup';
 import '../ProfilePage/Profile.css';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
+import context from '../../../Context/context';
 
-function MovieDes({ list, setList }) {
+function MovieDes() {
     const [data, setData] = useState({ name: "", description: "", duration: "", language: "", date: "", genre: "", url: "" });
     const [open, setOpen] = useState(false);
-
+    const {addMovie}=useContext(context);
     const save = async () => {
         if (data.name && data.description && data.duration && data.date && data.url) {
             console.log(typeof (data.duration));
             console.log(data);
-            try {
-                const response = await fetch('http://localhost:8000/movie/add', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                });
-
-                const res = await response.json();
-                console.log(res);
-            }
-            catch (e) {
-                console.log(e);
-            }
+            console.log(await addMovie(data));
         }
     }
     const closeModal = () => {
@@ -84,6 +71,7 @@ function MovieDes({ list, setList }) {
                                         <option >Action</option>
                                         <option >Romance</option>
                                         <option >Drama</option>
+                                        <option >Horror</option>
                                         <option >Comedy</option>
                                     </select>
                                 </div>
