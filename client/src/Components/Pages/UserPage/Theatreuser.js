@@ -8,7 +8,7 @@ import context from '../../../Context/context';
 
 function Theatreuser() {
     const {user} = useContext(context);
-    const [data, setData] = useState({ name: "", address: "", number: "", email: "" });
+    const [data, setData] = useState({ name: "", address: "", number: "", email: ""});
     const [open, setOpen] = useState(false);
     const {list} = useContext(context);
     

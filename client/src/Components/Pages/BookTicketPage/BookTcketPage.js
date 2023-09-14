@@ -1,37 +1,48 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import Popup from 'reactjs-popup';
 import Navbar from "../Navbars/Navbar";
-// import 'reactjs-popup/dist/index.css';
+import context from "../../../Context/context";
+import { useParams } from "react-router-dom";
 const BookTicketPage = () => {
   const [modal, setModal] = useState(false);
+  const {id} = useParams();
+  const {getMovie,movieData}=useContext(context);
+   
+    useEffect(()=>{
+        getMovie(id);
+    },[]);
+  const [data, setData] = useState({ name: "dfa", theatre: "dfaj", date: "adf", time: "adf", amount: "adf" });
   const [selectedSeats, setSelectedSeats] = useState([]);
   const rows = 5;
   const cols = 5;
-  const [id, setId] = useState(0);
   const [open, setOpen] = useState(false);
+ 
+
   const closeModal = () => {
     setOpen(o => !o);
-}
-
+  }
   const toggleSeat = (row, col) => {
     const seat = { row, col };
     const isSelected = isSelectedSeat(seat);
 
     if (isSelected) {
-
       setSelectedSeats((prevSelectedSeats) =>
         prevSelectedSeats.filter(
           (selectedSeat) =>
             selectedSeat.row !== row || selectedSeat.col !== col
         )
       );
-    } 
+    }
     else {
       setSelectedSeats((prevSelectedSeats) => [...prevSelectedSeats, seat]);
     }
-   
+
   };
+
+  const save =async () => {
+      
+  }
 
   const isSelectedSeat = (seat) =>
     selectedSeats.some(
@@ -47,7 +58,6 @@ const BookTicketPage = () => {
         const seat = { row, col };
         c++;
         const isSelected = isSelectedSeat(seat);
-
         grid.push(
           <div
             key={c}
@@ -65,9 +75,9 @@ const BookTicketPage = () => {
 
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <div className="border-2 w-full h-28 flex flex-col justify-center px-4 font-bold text-3xl">
-        Movie NAME
+        {movieData?.name}
       </div>
       <div className="w-full">
         <div className="border-2 rounded-xl w-[95%] mx-auto h-20 flex p-2 my-2">
@@ -77,7 +87,7 @@ const BookTicketPage = () => {
           </div>
           <div className="w-[70%] flex cursor-pointer">
             <div
-              onClick={() => {setModal(true); setOpen(o => !o);}}
+              onClick={() => { setModal(true); setOpen(o => !o); }}
               className="border-2 w-20 text-center rounded-xl text-xl font-bold flex flex-col justify-center"
             >
               12:00
@@ -104,34 +114,32 @@ const BookTicketPage = () => {
               </div>
               <div className="text-center font-bold">Screen</div>
               <div className="h-1.5 bg-gray-500 rounded-br-[900%] rounded-bl-[900%]"></div>
-              {selectedSeats.length?
-              (<div className="text-center mt-4">
-              <span className="font-bold">Selected Seats :</span> {selectedSeats.length}<br></br>
-              <div className="flex gap-2 w-min  mx-auto mt-2">
-               
-              {selectedSeats.map((seat)=>{
-                return(
-                  <div >
-                      {(seat.row-1)*5+seat.col} 
-                  </div>
-                )
-              })}
-              </div>
-              <div className="border-2 p-2 rounded-xl mt-4 font-bold w-[40%] mx-auto bg-blue-600 text-white shadow-2xl cursor-pointer hover:scale-105">
-                Pay Rs {selectedSeats.length*100}
-              </div>
-              
-            </div>):""}
-              
+              {selectedSeats.length ?
+                (<div className="text-center mt-4">
+                  <span className="font-bold">Selected Seats :</span> {selectedSeats.length}<br></br>
+                  <div className="flex gap-2 w-min  mx-auto mt-2">
 
+                    {selectedSeats.map((seat, key) => {
+                      return (
+                        <div >
+                          {(seat.row - 1) * 5 + seat.col}
+                        </div>
+                      )
+                    })}
+                  </div>
+                  <div onClick={() => {
+                    save();
+                  }} className="border-2 p-2 rounded-xl mt-4 font-bold w-[40%] mx-auto bg-blue-600 text-white shadow-2xl cursor-pointer hover:scale-105">
+                    Pay Rs {selectedSeats.length * 100}
+                  </div>
+                </div>) : ""}
             </div>
           )
         }
       </Popup>
+    </div>
 
-      </div>
-    
-    
+
   );
 };
 

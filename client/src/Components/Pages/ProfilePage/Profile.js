@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AddTheatre from "../TheatrePage/theatre";
 import MovieDescription from '../MovieDes/MovieDesc';
 import Navbar from "../Navbars/Navbar";
+import context from "../../../Context/context";
 
 function App() {
 	const [userInput, setUserInput] = useState("");
 	const [list, setList] = useState([]);
+	const {Movie} = useContext(context);
 	const [show,setShow]=useState(true);
 	const updateInput = (value) => {
 		setUserInput(value);
@@ -49,26 +51,6 @@ function App() {
 	// 		console.log(e);
 	// 	}
 	// };
-	
-	useEffect(()=>{
-		const find=async()=>{
-			try {
-				const response = await fetch('http://localhost:8000/movie', {
-				  method: 'GET',
-				  headers: {
-					'Content-Type': 'application/json',
-				  },
-				});
-				const res = await response.json();
-				// console.log(res);
-				setList(res);
-			}
-			catch(e){
-				console.log(e);
-			}
-		}
-		find();
-	})
 
 	return (
 		<div>
@@ -89,12 +71,12 @@ function App() {
 			<div>
 				<div className="md:col-span-5 md:col-start-4">
 				<div className="mb-3">
-					<MovieDescription list={list} setList={setList}/>
+					<MovieDescription/>
 				</div>
 			</div>
 			<div className="md:col-span-5 md:col-start-4">
 				<ul className="list-group ">
-					{(list.length) ? <div className="flex px-5 py-2">
+					{(Movie.length) ? <div className="flex px-5 py-2">
 						<div className="w-[6%] text-center flex flex-col justify-center ">
 							Poster
 						</div>
@@ -117,7 +99,7 @@ function App() {
 							Release Date
 						</div>
 					</div> : <></>}
-					{list.map((item, index) => (
+					{Movie.map((item, index) => (
 						<li
 							className="list-group-item border-2 border-black rounded-2xl my-1 px-5 py-2 flex justify-between  d-flex justify-content-between"
 							key={item._id}
