@@ -10,6 +10,8 @@ const ProviderState = ({ children }) => {
     const [isAdmin,setAdmin] = useState(false);
     const [list,setList] = useState([]);
     const [movieData,setMovieData]=useState();
+    const [theatreData,setTheatreData]=useState();
+    
     const [loading,setLoading]=useState(true);
     const deleteItem=async(id) => {
       try {
@@ -101,6 +103,24 @@ const ProviderState = ({ children }) => {
       }
      
     }
+    const getTheatre=async(id)=>{
+      try {
+        // console.log(id);
+        const response = await fetch(`http://localhost:8000/theatre/${id}`, {
+          method: 'GET',
+          headers: {
+          'Content-Type': 'application/json',
+          },
+        });
+        const res = await response.json();
+        setTheatreData(res);
+        // setLoading(false);
+       return res;
+      }
+      catch(e){
+        console.log(e);
+      }
+    }
     useEffect( () => {
         const fetchUser = async () => {
           const token = localStorage.getItem('token');
@@ -169,7 +189,7 @@ const ProviderState = ({ children }) => {
     }, [])
     return (
 
-        <context.Provider value={{ isusersignin, isAdmin, isprofilename, list,user,Movie,addMovie,deleteItem,getMovie,movieData,id,setId,loading}}>
+        <context.Provider value={{getTheatre,theatreData,setTheatreData,isusersignin, isAdmin, isprofilename, list,user,Movie,addMovie,deleteItem,getMovie,movieData,id,setId,loading,AddTheatre,updateUser,deleteTheatre}}>
 
             { children }
         </context.Provider>
