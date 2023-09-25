@@ -7,11 +7,9 @@ const User = new mongoose.Schema( {
     quote: {type: String},
     bookingMovies: [{
         type: mongoose.Schema.Types.ObjectId,
-        
     }],
     theatreOwned: [{
         type: mongoose.Schema.Types.ObjectId,
-       
     }],
 },
 {collection: 'user-data'}

@@ -123,13 +123,13 @@ const ProviderState = ({ children }) => {
               if(user.email === "devvratgupta123@gmail.com" || user.email=== "pratikgupta123@gmail.com"){
                 setAdmin(true);
               }
-
             }
           }
         }
         fetchUser();
       }, []);
       useEffect(() => {
+        setLoading(true);
         const User = async () => {
             try {
                 const response = await fetch('http://localhost:8000/theatre', {
@@ -140,6 +140,7 @@ const ProviderState = ({ children }) => {
                 });
                 const res = await response.json();
                 setList(res);
+                setLoading(false);
             }
             catch (e) {
 
@@ -169,8 +170,7 @@ const ProviderState = ({ children }) => {
     }, [])
     return (
 
-        <context.Provider value={{ isusersignin, isAdmin, isprofilename, list,user,Movie,addMovie,deleteItem,getMovie,movieData,id,setId,loading}}>
-
+        <context.Provider value={{ isusersignin, isAdmin, isprofilename, list,user,Movie,addMovie,deleteItem,getMovie,movieData,id,setId,loading,AddTheatre,deleteTheatre,updateUser}}>
             { children }
         </context.Provider>
     )
