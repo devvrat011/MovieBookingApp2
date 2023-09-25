@@ -12,12 +12,27 @@ const BookTicketPage = () => {
     useEffect(()=>{
         getMovie(id);
     },[]);
-  const [data, setData] = useState({ name: "dfa", theatre: "dfaj", date: "adf", time: "adf", amount: "adf" });
+  const [change,setChange] =useState(false);
+  const [data, setData] = useState({ name: "dfa", theatre: "dfaj", date: "adf", time: "adf", amount: 100 });
   const [selectedSeats, setSelectedSeats] = useState([]);
   const rows = 5;
   const cols = 5;
   const [open, setOpen] = useState(false);
- 
+
+  const confirmBooking = async (data) => {
+    try {
+      const response = await fetch('http://localhost:8000/booking/add', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        console.log(await response.json());
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   const closeModal = () => {
     setOpen(o => !o);
@@ -37,11 +52,21 @@ const BookTicketPage = () => {
     else {
       setSelectedSeats((prevSelectedSeats) => [...prevSelectedSeats, seat]);
     }
-
   };
 
+  useEffect( () => {
+    if(change)
+    {
+      // console.log(data);
+      confirmBooking(data);
+      setChange(false);
+    }
+  },[data,change])
+
   const save =async () => {
-      
+      setData({...data, name: "dshdj", date: "2023-06-10",
+      time: "19:30", theatre: "6503e39b7e191d9ca497d879", amount: 420});
+      setChange(true);
   }
 
   const isSelectedSeat = (seat) =>
@@ -118,7 +143,6 @@ const BookTicketPage = () => {
                 (<div className="text-center mt-4">
                   <span className="font-bold">Selected Seats :</span> {selectedSeats.length}<br></br>
                   <div className="flex gap-2 w-min  mx-auto mt-2">
-
                     {selectedSeats.map((seat, key) => {
                       return (
                         <div >

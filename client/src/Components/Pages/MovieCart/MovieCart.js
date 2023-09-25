@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import "./MovieCart.css"
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../Navbars/Navbar';
 import { useParams } from 'react-router-dom';
 import context from '../../../Context/context';
 import {Box, Skeleton, Stack} from '@chakra-ui/react';
@@ -11,14 +12,14 @@ function MovieCart() {
         navigate(`/book/${id}`);
     }
     const { id } = useParams();
-
     const { getMovie, movieData, loading } = useContext(context);
-
     useEffect(() => {
         getMovie(id);
     }, []);
+    
     return (
         <div>
+            <Navbar/>
             <div className={loading?"image_removed":"image_container"}>
                 <div className='image_container_main'>
                     {

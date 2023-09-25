@@ -1,26 +1,22 @@
-
 import React, { useEffect,useContext } from 'react'
-
 import { useState } from 'react';
 import Popup from 'reactjs-popup';
 import CloseIcon from '@mui/icons-material/Close';
 import context from '../../../Context/context';
+import Shows from './Shows';
 
 function Theatreuser() {
 
     const {user,AddTheatre,deleteTheatre,updateUser} = useContext(context);
     const [data, setData] = useState({ name: "", address: "", number: "", email: "" });
-
-
     const [open, setOpen] = useState(false);
-
     const [listdata,setListData]=useState([]);
+
     const deleteItem = async (id) => {
         try {
             deleteTheatre(id);
             if(user){
                 user.theatreOwned = user.theatreOwned.filter(theatreId => theatreId !== id);
-                
                 const deletedUserData = {
                     ...user,
                     theatreOwned: user.theatreOwned,
@@ -28,9 +24,7 @@ function Theatreuser() {
                 const updateUserResponse=await updateUser(user._id,deletedUserData)
                 setListData(prevListData => prevListData.filter(theater => theater._id !== id));
                 console.log(await updateUserResponse.json());
-                
-            }
-           
+            }  
         }
         catch (e) {
             console.log(e);
@@ -51,13 +45,10 @@ function Theatreuser() {
                             },
                         });
                         const res = await response.json();
-                       
                         fetchedData.push(res);
                     }
-    
                     setListData(fetchedData);  
                 }
-                       
             }
             catch (e) {
                 console.log(e);
@@ -66,15 +57,11 @@ function Theatreuser() {
         User();
     },[])
   
-
-
     const save = async () => {
         
         if (data.name && data.email && data.address && data.number) {
             try {
-              
                 const res=await AddTheatre(data);
-             
                 console.log(res);  
                 user.theatreOwned.push(res.newTheatre._id);
                 const updatedUserData = {
@@ -82,7 +69,6 @@ function Theatreuser() {
                     theatreOwned: user.theatreOwned,
                 };
                 const updateUserResponse=await updateUser(user._id,updatedUserData)
-                 
                 console.log(await updateUserResponse.json());
                 setListData(prevListData => [...prevListData, res.newTheatre]);   
             }
@@ -91,11 +77,7 @@ function Theatreuser() {
                 console.log(e);
             }
         }
-        
-     
-        
     }
-    
     const closeModal = () => {
         setOpen(o => !o);
     }
@@ -107,7 +89,6 @@ function Theatreuser() {
     }
     return (
         <>
-        
             <button className="border-2 rounded-xl bg-blue-500 text-white p-2" onClick={() => setOpen(o => !o)}>Add Theatre</button>
             <Popup open={open} closeOnDocumentClick onClose={closeModal} className='moviedesc-modal' modal nested>
                 {
@@ -185,10 +166,8 @@ function Theatreuser() {
                         </div>
                     </div> : <></>}
                     {listdata?.map((item, index) => (
-                        <li
-                            className="list-group-item border-2 border-black rounded-2xl my-1 px-5 py-2 flex justify-between  d-flex justify-content-between"
-                            key={index}
-                        >
+                        <li className="list-group-item border-2 border-black rounded-2xl my-1 px-5 py-2 flex justify-between  d-flex justify-content-between"
+                            key={index}>
                             <div className="flex w-full ">
                                 <div className="w-[10%] text-center flex flex-col justify-center ">
                                     {item?.name}
@@ -218,6 +197,7 @@ function Theatreuser() {
                                     >
                                         Edit
                                     </button>
+                                    <Shows/>
                                 </div>
                             </div>
                         </li>

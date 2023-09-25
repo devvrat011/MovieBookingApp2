@@ -4,27 +4,27 @@ const bookingSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: false,
+    unique:false,
   },
   theatre: {
-    type: String,
-    
-    unique: false,
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    unique:false,
   },
   date:{
     type: String,
     required: true,
-    unique: false,
+    unique:false,
   },
   time:{
     type: String,
     required: true,
-    unique: false,
+    unique:false,
   },
   amount:{
     type:Number,
     required: true,
-    unique: false,
+    unique:false,
   }
   
 });
