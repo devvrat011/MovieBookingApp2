@@ -57,10 +57,27 @@ const update=async (req,res) => {
     }
 };
 
+const getUserTheatres = async (req, res) => {
+    try {
+        const userId = req.params.userId; 
+        const user = await User.findById(userId).populate('theatreOwned');
+            
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+       
+        const theatersOwned = user.theatreOwned;
+        res.status(200).json({ theatersOwned });
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching user theaters' });
+    }
+};
+
 module.exports= ({
    register,
    login,
-   update
+   update,
+   getUserTheatres
 });
 
 

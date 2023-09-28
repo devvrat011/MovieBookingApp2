@@ -10,6 +10,7 @@ const User = new mongoose.Schema( {
     }],
     theatreOwned: [{
         type: mongoose.Schema.Types.ObjectId,
+        ref:'Theatre',
     }],
 },
 {collection: 'user-data'}
