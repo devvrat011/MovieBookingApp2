@@ -11,6 +11,7 @@ const theatrerouter = require("./routes/theatre");
 
 const usersrouter=require("./routes/users.js");
 const bookingrouter=require("./routes/booking.js");
+const showrouter = require("./routes/shows");
 
 dotenv.config();
 
@@ -30,6 +31,8 @@ mongoose.connect(process.env.MONGO_URL, {
 
 app.use("/movie",moviesrouter);
 app.use("/theatre",theatrerouter);
+
+app.use("/show",showrouter);
 
 app.get('/', (req, res) => {
     res.send('Server is Running! 🚀');

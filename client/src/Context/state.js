@@ -5,6 +5,7 @@ const ProviderState = ({ children }) => {
     const [id,setId]=useState();
     const [user, setUser] = useState(null);
     const [Movie, setMovie] = useState([]);
+    const [clickid,setclickid] = useState();
     const [isusersignin,Setusersignin] = useState(false);
     const [isprofilename,Setprofilename] = useState("Profile");
     const [isAdmin,setAdmin] = useState(false);
@@ -48,6 +49,37 @@ const ProviderState = ({ children }) => {
 
     };
 
+    const addShows = async (data) => {
+      try {
+          const response = await fetch('http://localhost:8000/show/add', {
+              method: 'POST',
+              headers: {
+                  'content-type': 'application/json',
+              },
+              body: JSON.stringify(data),
+          });
+          const res = await response.json();
+          return res;
+      }
+      catch(e) {
+          console.log(e);
+      }
+  }
+  const getShows = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:8000/show/${id}`, {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+      });
+      const res = await response.json();
+     return res;
+    }
+    catch(e){
+      console.log(e);
+    }
+  }
 
     const addMovie=async(data)=>{
       try {
@@ -58,9 +90,7 @@ const ProviderState = ({ children }) => {
             },
             body: JSON.stringify(data),
         });
-
         const res = await response.json();
-        // console.log(res);
     }
     catch (e) {
         console.log(e);
@@ -103,6 +133,18 @@ const ProviderState = ({ children }) => {
       }
      
     }
+
+    const updateTheatre = async(id,updatetheatredata) => {
+        const updateTheatreResponse = await fetch(`http://localhost:8000/theatre/${id}`, {
+              method: 'PUT', 
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(updatetheatredata),
+        });  
+        return updateTheatreResponse;
+    }
+
     const getTheatre=async(id)=>{
       try {
         // console.log(id);
@@ -114,11 +156,10 @@ const ProviderState = ({ children }) => {
         });
         const res = await response.json();
         setTheatreData(res);
-        // setLoading(false);
        return res;
       }
       catch(e){
-        console.log(e);
+        console.log(e);  
       }
     }
     useEffect( () => {
@@ -189,7 +230,7 @@ const ProviderState = ({ children }) => {
       find();
     }, [])
     return (
-        <context.Provider value={{getTheatre,theatreData,setTheatreData,isusersignin, isAdmin, isprofilename, list,user,Movie,addMovie,deleteItem,getMovie,movieData,id,setId,loading,AddTheatre,updateUser,deleteTheatre}}>
+        <context.Provider value={{getTheatre,getShows,updateTheatre,theatreData,setclickid,clickid,setTheatreData,isusersignin, isAdmin, isprofilename, list,user,Movie,addMovie,deleteItem,getMovie,movieData,id,setId,loading,AddTheatre,updateUser,deleteTheatre,addShows}}>
             { children }
         </context.Provider>
     )

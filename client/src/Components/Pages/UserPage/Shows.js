@@ -3,12 +3,15 @@ import { useState } from 'react';
 import Popup from 'reactjs-popup';
 import CloseIcon from '@mui/icons-material/Close';
 import './shows.css';
+import context from '../../../Context/context';
 
 function Shows() {
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
-    const [data, setData] = useState({ showname: "f", date: "d", time: "d", movie: "d",ticketPrice: "df", totalseat: "df" });
+    const [data, setData] = useState({ showname: "", date: "", time: "", movie: "",ticketPrice: "", totalSeat: "" });
     const [listdata,setListData]=useState([]);
+    const [check,setCheck] = useState(false);
+    const {addShows,clickid,getTheatre,updateTheatre,getShows} = useContext(context);
 
     const closeModal = () => {
         setOpen(false);
@@ -16,17 +19,33 @@ function Shows() {
     const closeModal2 = () => {
         setOpen2(false);
     }
-    const save = () => {
-        // console.log(data);
-        
-        setListData(prevListData => [...prevListData, data]);
-        console.log(listdata);
-        // setOpen2(false);
+    useEffect( () => {
+        const fetch = async() => {
+            // console.log("l");
+            if(clickid && check){
+                const fetchedData = [];
+                const res = await getTheatre(clickid);
+                const arr = res.shows;
+                for(let i=0;i<arr.length;i++){
+                    const show = await getShows(arr[i]);
+                    fetchedData.push(show);
+                }
+                setListData(fetchedData);
+            }
+        }
+        fetch();
+    },[check])
+    const save = async() => {
+        const res  = await addShows(data);
+        const theatre = await getTheatre(clickid);
+        theatre.shows.push(res.newShow._id);
+        await updateTheatre(clickid,theatre);
+        const show = await getShows(res.newShow._id);
+        setListData(prevListData => [...prevListData, show]);
     }
-    console.log(data);
     return (
         <>
-            <button className="border-2 rounded-xl bg-blue-500 text-white p-2" onClick={() => setOpen(true)}>Shows</button>
+            <button className="border-2 rounded-xl bg-blue-500 text-white p-2" onClick={() => {setOpen(true);setCheck(true)}}>Shows</button>
             <Popup open={open} closeOnDocumentClick onClose={closeModal} className='moviedesc-modal' modal nested>
                 {
                     close => (
@@ -65,7 +84,7 @@ function Shows() {
                                         ticketPrice
                                     </div>
                                     <div className='w-[10%] text-center'>
-                                        TotalSeat
+                                        totalSeat
                                     </div>
                                 </div> : <></>}
                                 {listdata?.map((item, index) => (
@@ -88,7 +107,7 @@ function Shows() {
                                                 {item?.ticketPrice}
                                             </div>
                                             <div className="w-[10%] text-center flex flex-col justify-center">
-                                                {item?.totalseat}
+                                                {item?.totalSeat}
                                             </div>
                                             {/* <div className="flex mx-auto gap-3">
                                                 <button
@@ -161,13 +180,13 @@ function Shows() {
                                     <div>
                                         Ticket Price
                                     </div>
-                                    <input onChange={(e) => setData({...data, ticket: e.target.value})} type='text' className='border-2 rounded-lg w-[100%]'/>
+                                    <input onChange={(e) => setData({...data, ticketPrice: e.target.value})} type='number' className='border-2 rounded-lg w-[100%]'/>
                                 </div>
                                 <div className='flex-col w-[35%]'>
                                     <div>
                                         Total Seat
                                     </div>
-                                    <input onChange={(e) => setData({...data, totalseat: e.target.value})} type='text' className='border-2 rounded-lg w-[100%]'/>
+                                    <input onChange={(e) => setData({...data, totalSeat: e.target.value})} type='number' className='border-2 rounded-lg w-[100%]'/>
                                 </div>
                             </div>
                             <div>
