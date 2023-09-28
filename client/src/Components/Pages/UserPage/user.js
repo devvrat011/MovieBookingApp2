@@ -4,7 +4,7 @@ import Theatreuser from "./Theatreuser";
 import Booking from "./Bookings";
 function User() {
 	const [show,setShow]=useState(true);
-
+	
 	return (
 		<div>
 			<Navbar/>

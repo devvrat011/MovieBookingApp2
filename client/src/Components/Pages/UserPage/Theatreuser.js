@@ -7,11 +7,16 @@ import Shows from './Shows';
 // import './shows.css';    
 function Theatreuser() {
 
-    const {user,AddTheatre,deleteTheatre,updateUser} = useContext(context);
+    const {user,AddTheatre,deleteTheatre,updateUser,setclickid} = useContext(context);
     const [data, setData] = useState({ name: "", address: "", number: "", email: "" });
     const [open, setOpen] = useState(false);
     const [listdata,setListData]=useState([]);
-
+    const showall=(id)=>{
+        setclickid(id);
+        // console.log(id);
+       
+        
+    }
     const deleteItem = async (id) => {
         try {
             deleteTheatre(id);
@@ -48,8 +53,7 @@ function Theatreuser() {
                         fetchedData.push(res.theatersOwned);
                         
                     setListData(fetchedData[0]);  
-                    
-                // }
+                   
             }
             catch (e) {
                 console.log(e);
@@ -57,7 +61,7 @@ function Theatreuser() {
         }
         User();
     },[])
-    // console.log(listdata[0]);
+
     const save = async () => {
         
         if (data.name && data.email && data.address && data.number) {
@@ -73,7 +77,6 @@ function Theatreuser() {
                 console.log(await updateUserResponse.json());
                 setListData(prevListData => [...prevListData, res.newTheatre]);   
             }
-            
             catch (e) {
                 console.log(e);
             }
@@ -198,7 +201,9 @@ function Theatreuser() {
                                     >
                                         Edit
                                     </button>
-                                    <Shows/>
+                                    <button onClick={()=>showall(item._id)}>
+                                        <Shows/>
+                                    </button>
                                 </div>
                             </div>
                         </li>
