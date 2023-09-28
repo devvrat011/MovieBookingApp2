@@ -2,7 +2,6 @@ import React, { useEffect, useContext } from 'react'
 import { useState } from 'react';
 import Popup from 'reactjs-popup';
 import CloseIcon from '@mui/icons-material/Close';
-import './shows.css';
 
 function Shows() {
     const [open, setOpen] = useState(false);
@@ -17,17 +16,16 @@ function Shows() {
         setOpen2(false);
     }
     const save = () => {
-        // console.log(data);
-        
+       
         setListData(prevListData => [...prevListData, data]);
         console.log(listdata);
-        // setOpen2(false);
+        
     }
     console.log(data);
     return (
         <>
             <button className="border-2 rounded-xl bg-blue-500 text-white p-2" onClick={() => setOpen(true)}>Shows</button>
-            <Popup open={open} closeOnDocumentClick onClose={closeModal} className='moviedesc-modal' modal nested>
+            <Popup open={open} closeOnDocumentClick onClose={closeModal}  style={{width:"80%"}} modal nested>
                 {
                     close => (
                         <div className='flex flex-col gap-4 my-3 w-[90%] md:w-full px-4  mx-auto rounded-2xl '>
@@ -112,7 +110,7 @@ function Shows() {
                     )
                 }
             </Popup>
-            <Popup open={open2} closeOnDocumentClick onClose={closeModal2} className='moviedesc-modal' modal nested>
+            <Popup open={open2} closeOnDocumentClick onClose={closeModal2} style={{width:"80%"}} modal nested>
             {
                 close => (
                     <div className='flex z-20 gap-4 w-[100%] md:w-full flex-col mx-auto p-4 rounded-2xl '>
