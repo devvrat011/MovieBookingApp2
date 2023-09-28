@@ -4,7 +4,7 @@ import Popup from 'reactjs-popup';
 import CloseIcon from '@mui/icons-material/Close';
 import context from '../../../Context/context';
 import Shows from './Shows';
-
+// import './shows.css';    
 function Theatreuser() {
 
     const {user,AddTheatre,deleteTheatre,updateUser,setclickid} = useContext(context);
@@ -39,21 +39,21 @@ function Theatreuser() {
     useEffect(() => {
         const User = async () => {
             try {
-                const size=await user?.theatreOwned;
+              
                 const fetchedData = [];
-                if(size?.length>0){
-                    for (const id of size) {
-                        const response = await fetch(`http://localhost:8000/theatre/${id}`, {
+
+                        const response = await fetch(`http://localhost:8000/api/${user?._id}/theatres`, {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json',
                             },
                         });
                         const res = await response.json();
-                        fetchedData.push(res);
-                    }
-                    setListData(fetchedData);
-                }
+                        console.log(res);
+                        fetchedData.push(res.theatersOwned);
+                        
+                    setListData(fetchedData[0]);  
+                   
             }
             catch (e) {
                 console.log(e);
@@ -61,7 +61,7 @@ function Theatreuser() {
         }
         User();
     },[])
-   
+
     const save = async () => {
         
         if (data.name && data.email && data.address && data.number) {
@@ -94,7 +94,7 @@ function Theatreuser() {
     return (
         <>
             <button className="border-2 rounded-xl bg-blue-500 text-white p-2" onClick={() => setOpen(o => !o)}>Add Theatre</button>
-            <Popup open={open} closeOnDocumentClick onClose={closeModal} className='moviedesc-modal' modal nested>
+            <Popup open={open} closeOnDocumentClick onClose={closeModal} className='moviedesc-modal' style={{width:"80%"}} modal nested>
                 {
                     close => (
                         <div onKeyDown={(e) => onKeyDownHandler(e)} className='flex gap-4 w-[90%] md:w-full flex-col p-8 max-w-lg mx-auto bg-white rounded-2xl shadow-lg'>
@@ -197,7 +197,7 @@ function Theatreuser() {
                                     </button>
                                     <button
                                         className="btn flex flex-col justify-center btn-light  bg-blue-700 text-white px-2 "
-                                        // onClick={() => editItem(index)}
+                                       
                                     >
                                         Edit
                                     </button>

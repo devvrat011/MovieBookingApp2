@@ -4,6 +4,7 @@ import Popup from 'reactjs-popup';
 import Navbar from "../Navbars/Navbar";
 import context from "../../../Context/context";
 import { useParams } from "react-router-dom";
+import "./BookTicket.css";
 const BookTicketPage = () => {
   const [modal, setModal] = useState(false);
   const {id} = useParams();
@@ -57,7 +58,7 @@ const BookTicketPage = () => {
   useEffect( () => {
     if(change)
     {
-      // console.log(data);
+    
       confirmBooking(data);
       setChange(false);
     }
@@ -120,8 +121,8 @@ const BookTicketPage = () => {
           </div>
         </div>
       </div>
-      {/* <button className="border-2 rounded-xl bg-blue-500 text-white p-2" onClick={() => }>Add Movie</button> */}
-      <Popup open={open} closeOnDocumentClick onClose={closeModal} className='moviedesc-modal' modal nested>
+      
+      <Popup open={open} closeOnDocumentClick onClose={closeModal}   modal nested>
         {
           close => (
             <div className='flex gap-4 w-[100%]  md:w-[100%] flex-col p-10 mx-auto bg-white rounded-2xl shadow-lg'>

@@ -131,7 +131,7 @@ function Shows() {
                     )
                 }
             </Popup>
-            <Popup open={open2} closeOnDocumentClick onClose={closeModal2} className='moviedesc-modal' modal nested>
+            <Popup open={open2} closeOnDocumentClick onClose={closeModal2} style={{width:"80%"}} modal nested>
             {
                 close => (
                     <div className='flex z-20 gap-4 w-[100%] md:w-full flex-col mx-auto p-4 rounded-2xl '>

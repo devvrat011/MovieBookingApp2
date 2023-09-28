@@ -13,8 +13,6 @@ const AddTheatre = () => {
 		const now = async () => {
 			if(change){
 				const arr = await getTheatre(id);
-				console.log(change);
-				console.log(arr);
 				if (arr){
 					const updatedTheatreData = {
 						...arr,
