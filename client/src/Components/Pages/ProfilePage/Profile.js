@@ -1,12 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import AddTheatre from "../TheatrePage/theatre";
 import MovieDescription from '../MovieDes/MovieDesc';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import Navbar from "../Navbars/Navbar";
 import context from "../../../Context/context";
 
 function App() {
 	const [userInput, setUserInput] = useState("");
-	const [list, setList] = useState([]);
 	const {Movie} = useContext(context);
 	const [show,setShow]=useState(true);
 	const updateInput = (value) => {
@@ -127,19 +128,19 @@ function App() {
 									{item.date}
 								</div>
 
-								<div className="flex mx-auto gap-3">
-								<button
-									className="btn flex flex-col justify-center btn-light  bg-blue-700 text-white px-2"
-									onClick={() => deleteItem(item._id)}
-								>
-									Delete
-								</button>
-								<button
-									className="btn flex flex-col justify-center btn-light  bg-blue-700 text-white px-2 "
-									// onClick={() => editItem(item._id)}
-								>
-									Edit
-								</button>
+								<div className="flex mx-auto gap-2">
+									<button
+										className="btn flex flex-col justify-center btn-light  text-black "
+										onClick={() => deleteItem(item._id)}
+									>
+										<DeleteIcon/>
+									</button>
+									<button
+										className="btn flex flex-col justify-center btn-light  text-black "
+										// onClick={() => editItem(item._id)}
+									>
+										<EditIcon/>
+									</button>	
 							</div>
 							</div>
 							
