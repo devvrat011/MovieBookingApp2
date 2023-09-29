@@ -5,6 +5,7 @@ import Navbar from "../Navbars/Navbar";
 import context from "../../../Context/context";
 import { useParams } from "react-router-dom";
 import "./BookTicket.css";
+import DateCarousel from "../../DateCarousel/dateCarousel";
 const BookTicketPage = () => {
   const [modal, setModal] = useState(false);
   const {id} = useParams();
@@ -98,13 +99,16 @@ const BookTicketPage = () => {
     }
     return grid;
   };
-
+  const handleDateSelect = (selectedDate) => {
+    console.log('Selected Date:', selectedDate);
+  };
   return (
     <div>
       <Navbar />
       <div className="border-2 w-full h-28 flex flex-col justify-center px-4 font-bold text-3xl">
         {movieData?.name}
       </div>
+      <DateCarousel onSelectDate={handleDateSelect}/>
       <div className="w-full">
         <div className="border-2 rounded-xl w-[95%] mx-auto h-20 flex p-2 my-2">
           <div className="w-[30%]">

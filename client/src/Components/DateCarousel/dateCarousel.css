@@ -1,0 +1,19 @@
+.date-carousel {
+    margin: 20px;
+    /* border:2px solid black; */
+    width:30%;
+  }
+  
+  .date-card {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+
+    cursor: pointer;
+  }
+  
+  .date-card.selected {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
