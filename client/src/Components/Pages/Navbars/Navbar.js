@@ -3,6 +3,8 @@ import './Navbar.css';
 import {useNavigate} from 'react-router-dom';
 import {useContext} from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
 import context from '../../../Context/context';
 
 function Navbar() {
@@ -41,24 +43,19 @@ function Navbar() {
   return (
     <div className='navbar'>
         <div className='nav-logo cursor-pointer' onClick={navigateToHome}>
-            <h2>Cinematic</h2>
+            <span>Cinematic</span>
         </div>
-        <div className='nav-search'>
-            <input className='nav-box text-black' type = 'text' placeholder='Type to search...'/>
+        <div className='nav-content w-[55%]'>
+            <input className='nav-box text-black ' type = 'text' placeholder='Type to search...'/>
         </div>
-        <div className='nav_loc_login'>
-            <div className='nav-login ' style={{cursor: "pointer"}}>
-                <div onClick={navigateToLogin}>{(isusersignin) ? "Sign Out" : "Sign In"}</div>
-            </div>
-        </div>
-        <div className='nav-profile cursor-pointer flex gap-3' onClick={navigateToProfile}>
-           <AccountCircleIcon/> 
-           <div className='flex-col'>
-                <div>
-                    {(isAdmin) ? "Admin" : ""}
-                </div> 
-                <div>
-                    {isprofilename}
+        <div className='nav-profile cursor-pointer flex gap-10'>
+            <div className='nav-login items-center' onClick={navigateToLogin}>{(isusersignin) ? <span className=''><LogoutIcon/> Sign Out</span> : <span><LoginIcon/> Sign In</span>}</div>
+           <div className='flex gap-2 nav-profile-icon items-center' onClick={navigateToProfile}>
+                <AccountCircleIcon/>
+                <div className='flex-col'>
+                        {(isAdmin) ? <span>Admin</span>
+                        :
+                        <div>{isprofilename}</div>}
                 </div>
            </div>
         </div>

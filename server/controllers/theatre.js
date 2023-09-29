@@ -56,10 +56,28 @@ const getTheatres = async (req, res, next) => {
         next(err);
     }
 };
+
+const getTheatreShows = async (req,res) => {
+    try {
+        const theatreId = req.params.id;
+        const theatre = await theatreSchema.findById(theatreId).populate('Shows');
+        console.log(theatre);
+        if(!theatre){
+            return res.status(404).json({ error: 'theatre not found' });
+        }
+        const ShowsOwned = theatre.shows;
+        res.status(200).json({ ShowsOwned });
+    }
+    catch(err) {
+        res.status(500).json({ error: 'Error fetching theaters' });
+    }
+}
+
 module.exports= ({
     addTheatre,
     getTheatre,
     getTheatres,
     updateTheatre,
     deleteTheatre,
+    getTheatreShows,
 });

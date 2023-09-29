@@ -2,9 +2,11 @@ import React, { useEffect,useContext } from 'react'
 import { useState } from 'react';
 import Popup from 'reactjs-popup';
 import CloseIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import context from '../../../Context/context';
 import Shows from './Shows';
-// import './shows.css';    
+
 function Theatreuser() {
 
     const {user,AddTheatre,deleteTheatre,updateUser,setclickid} = useContext(context);
@@ -13,9 +15,6 @@ function Theatreuser() {
     const [listdata,setListData]=useState([]);
     const showall=(id)=>{
         setclickid(id);
-        // console.log(id);
-       
-        
     }
     const deleteItem = async (id) => {
         try {
@@ -39,21 +38,17 @@ function Theatreuser() {
     useEffect(() => {
         const User = async () => {
             try {
-              
                 const fetchedData = [];
-
-                        const response = await fetch(`http://localhost:8000/api/${user?._id}/theatres`, {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                        });
-                        const res = await response.json();
-                        console.log(res);
-                        fetchedData.push(res.theatersOwned);
-                        
-                    setListData(fetchedData[0]);  
-                   
+                const response = await fetch(`http://localhost:8000/api/${user?._id}/theatres`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                const res = await response.json();
+                // console.log(res);
+                fetchedData.push(res.theatersOwned);
+                setListData(fetchedData[0]);
             }
             catch (e) {
                 console.log(e);
@@ -67,7 +62,7 @@ function Theatreuser() {
         if (data.name && data.email && data.address && data.number) {
             try {
                 const res=await AddTheatre(data);
-                console.log(res);  
+                console.log(res);
                 user.theatreOwned.push(res.newTheatre._id);
                 const updatedUserData = {
                     ...user,
@@ -188,22 +183,27 @@ function Theatreuser() {
                                 <div className="w-[20%] text-center flex flex-col justify-center">
                                     {item?.status ? "Approved":"Pending"}
                                 </div>
-                                <div className="flex mx-auto gap-3">
+                                <div className="flex mx-auto gap-1 w-[10%]">
                                     <button
-                                        className="btn flex flex-col justify-center btn-light  bg-blue-700 text-white px-2"
+                                        className="btn flex flex-col justify-center btn-light text-black "
                                         onClick={() => deleteItem(item._id)}
                                     >
-                                        Delete
+                                        <DeleteIcon/>
                                     </button>
                                     <button
-                                        className="btn flex flex-col justify-center btn-light  bg-blue-700 text-white px-2 "
-                                       
+                                        className="btn flex flex-col justify-center btn-light text-black"
                                     >
-                                        Edit
+                                        <EditIcon/>
                                     </button>
-                                    <button onClick={()=>showall(item._id)}>
-                                        <Shows/>
-                                    </button>
+                                    {
+                                        (item?.status) ? (
+                                            <button onClick={()=>showall(item._id)}>
+                                                <Shows/>
+                                            </button>
+                                        ) : (
+                                            <></>
+                                        )
+                                    }
                                 </div>
                             </div>
                         </li>

@@ -27,7 +27,9 @@ const theatreSchema = new mongoose.Schema({
     },
     shows: [{
         type: mongoose.Schema.Types.ObjectId,
+        ref: 'Shows',
     }],
-});
+},
+);
 
 module.exports = mongoose.model('Theatre', theatreSchema);

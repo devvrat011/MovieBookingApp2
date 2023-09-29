@@ -1,34 +1,94 @@
 * {
     box-sizing: border-box;
     margin: 0;
+    padding: 0;
 }
 
+:root {
+    --bg-color: #222327;
+    --text-color: #fff;
+}
 .navbar {
+    width: 100%;
+    top: 0;
+    right: 0;
+    z-index: 1000;
     display: flex;
-    flex-direction: row;
-    background-color: #0254A9;
-    padding: 1.3rem;
-    color: white;
-    justify-content: space-around;
+    background-color: #131921;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 9%;   
+    transition: all .50s ease;
 }
 
-.nav_loc_login {
+.nav-logo {
     display: flex;
-    justify-content: space-between;
-    width: 100px;
+    align-items: center;
 }
-    
+
+.nav-logo span {
+    color : var(--text-color);
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.nav-content {
+    display: flex;
+}
+
+.nav-content .nav-login {
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 350;
+    padding: 5px 0;
+    margin: 0px 30px;
+    transition: all .5s ease;
+}
+
+.nav-profile {
+    display: flex;
+    align-items: center;
+}
+
+.nav-profile .nav-login span {
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 350;
+    transition: all .5s ease;
+}
+
 .nav-box:focus {
      outline: none;
 }
 
 .nav-box {
-    width: 35rem;
-    height: 2.1rem;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    border-radius: 20px;
-    border: none;
-    text: black;
-    padding: 0 15px; 
+    width: 100%;
+    font-weight: 350;
+    padding: 0.3rem 0.7rem;
+    border-radius: 0.8rem;
+}
+
+.nav-profile-icon {
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 400;
+    transition: all .5s ease;
+}
+
+@media (max-width: 1280px) {
+    .navbar {
+        padding: 24px 8%;
+        transition: .5s;
+    }
+}
+
+@media (max-width: 1090px) {
+    .navbar {
+        padding: 14px 4%;
+        transition: 0.5s;
+    }
+    .nav-content {
+        padding: 5px 0;
+        margin: 0 20px;
+    }
 }

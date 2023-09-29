@@ -10,7 +10,6 @@ function Shows() {
     const [open2, setOpen2] = useState(false);
     const [data, setData] = useState({ showname: "", date: "", time: "", movie: "",ticketPrice: "", totalSeat: "" });
     const [listdata,setListData]=useState([]);
-    const [check,setCheck] = useState(false);
     const {addShows,clickid,getTheatre,updateTheatre,getShows} = useContext(context);
 
     const closeModal = () => {
@@ -21,20 +20,29 @@ function Shows() {
     }
     useEffect( () => {
         const fetch = async() => {
-            // console.log("l");
-            if(clickid && check){
-                const fetchedData = [];
-                const res = await getTheatre(clickid);
-                const arr = res.shows;
-                for(let i=0;i<arr.length;i++){
-                    const show = await getShows(arr[i]);
-                    fetchedData.push(show);
+            if(clickid){
+                try {
+                    // console.log("hello");
+                    const fetchedData = [];
+                    const response = await fetch(`http://localhost:8000/theatre/${clickid}/shows`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    const res = await response.json();
+                    // console.log(res);
+                    fetchedData.push(res.shows);
+                    setListData(fetchedData[0]);
                 }
-                setListData(fetchedData);
+                catch (err) {
+                    console.log(err);
+                }
             }
         }
         fetch();
-    },[check])
+    },[])
+
     const save = async() => {
         const res  = await addShows(data);
         const theatre = await getTheatre(clickid);
@@ -45,7 +53,7 @@ function Shows() {
     }
     return (
         <>
-            <button className="border-2 rounded-xl bg-blue-500 text-white p-2" onClick={() => {setOpen(true);setCheck(true)}}>Shows</button>
+            <button className="border-2 rounded-xl bg-blue-500 text-white p-2" onClick={() => {setOpen(true);}}>Shows</button>
             <Popup open={open} closeOnDocumentClick onClose={closeModal} className='moviedesc-modal' modal nested>
                 {
                     close => (
