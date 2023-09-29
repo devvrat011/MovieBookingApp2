@@ -22,7 +22,6 @@ function Shows() {
         const fetch = async() => {
             if(clickid){
                 try {
-                    // console.log("hello");
                     const fetchedData = [];
                     const response = await fetch(`http://localhost:8000/theatre/${clickid}/shows`, {
                         method: 'GET',
