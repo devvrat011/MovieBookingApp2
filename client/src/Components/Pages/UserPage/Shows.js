@@ -11,17 +11,22 @@ function Shows() {
     const [data, setData] = useState({ showname: "", date: "", time: "", movie: "",ticketPrice: "", totalSeat: "" });
     const [listdata,setListData]=useState([]);
     const {addShows,clickid,getTheatre,updateTheatre,getShows} = useContext(context);
-
+    const [isLoading,setisLoading]=useState();
     const closeModal = () => {
         setOpen(false);
+        setListData();
     }
     const closeModal2 = () => {
         setOpen2(false);
+        setListData();
     }
     useEffect( () => {
-        const fetch = async() => {
+        const fetchbtn = async() => {
             if(clickid){
                 try {
+
+                    setisLoading(true); 
+
                     const fetchedData = [];
                     const response = await fetch(`http://localhost:8000/theatre/${clickid}/shows`, {
                         method: 'GET',
@@ -30,17 +35,20 @@ function Shows() {
                         },
                     });
                     const res = await response.json();
-                    // console.log(res);
-                    fetchedData.push(res.shows);
+                    console.log(res);
+                    fetchedData.push(res.ShowsOwned);
                     setListData(fetchedData[0]);
+                    setisLoading(false);
+                 
                 }
                 catch (err) {
                     console.log(err);
+                    setisLoading(false)
                 }
             }
         }
-        fetch();
-    },[])
+        fetchbtn();
+    },[clickid])
 
     const save = async() => {
         const res  = await addShows(data);
@@ -74,7 +82,10 @@ function Shows() {
                             </div>
                             <div className="md:col-span-5 md:col-start-4">
                             <ul className="list-group ">
-                                {(listdata?.length) ? <div className="flex px-5 py-2">
+
+                                {isLoading ? (
+                                        <div>Loading...</div>
+                                    ):(listdata?.length) ? <div className="flex px-5 py-2">
                                     <div className="w-[10%] text-center flex flex-col justify-center ">
                                         ShowName
                                     </div>
@@ -94,7 +105,9 @@ function Shows() {
                                         totalSeat
                                     </div>
                                 </div> : <></>}
-                                {listdata?.map((item, index) => (
+                                {isLoading ? (
+                                        <div></div>
+                                    ):listdata?.map((item, index) => (
                                     <li className="list-group-item border-2 border-black rounded-2xl my-1 px-5 py-2 flex justify-between  d-flex justify-content-between"
                                         key={index}>
                                         <div className="flex w-full ">
