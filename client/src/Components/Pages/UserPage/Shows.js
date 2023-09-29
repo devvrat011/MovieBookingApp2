@@ -24,7 +24,9 @@ function Shows() {
         const fetchbtn = async() => {
             if(clickid){
                 try {
+
                     setisLoading(true); 
+
                     const fetchedData = [];
                     const response = await fetch(`http://localhost:8000/theatre/${clickid}/shows`, {
                         method: 'GET',
