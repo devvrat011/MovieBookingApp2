@@ -6,17 +6,35 @@ import context from "../../../Context/context";
 import { useParams } from "react-router-dom";
 import "./BookTicket.css";
 import DateCarousel from "../../DateCarousel/dateCarousel";
+
 const BookTicketPage = () => {
+
   const [modal, setModal] = useState(false);
   const startDate = new Date();
   const [dateS,setDateS]=useState(startDate.toDateString());
   const {id} = useParams();
-  const {getMovie,movieData}=useContext(context);
+  const {getMovie,movieData,getTheatre,getShows}=useContext(context);
+  const [theatredata,setTheatreData]  = useState();
+  const [some,setSome] = useState(true);
    
     useEffect(()=>{
         getMovie(id);
     },[]);
-   
+    useEffect(() => {
+      const find = async() => {
+        const fetchedData = [];
+        for(let i=0;i<movieData.theatres.length;i++){
+          const res = await getTheatre(movieData.theatres[i]);
+          for(let j=0;j<res.shows.length;j++){
+            const value = await getShows(res.shows[j]);
+            res.shows[j] = value;
+          }
+          fetchedData.push(res);
+        }
+        setTheatreData(fetchedData);
+      }
+      find();
+    },[movieData])
   const [change,setChange] =useState(false);
   const [data, setData] = useState({ name: "dfa", theatre: "dfaj", date: "adf", time: "adf", amount: 100 });
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -33,7 +51,8 @@ const BookTicketPage = () => {
           },
           body: JSON.stringify(data),
         });
-        console.log(await response.json());
+        await response.json();
+        // console.log();
     } catch (e) {
       console.log(e);
     }
@@ -62,7 +81,6 @@ const BookTicketPage = () => {
   useEffect( () => {
     if(change)
     {
-      console.log(data);
       confirmBooking(data);
       setSelectedSeats([]);
       setChange(false);
@@ -113,7 +131,6 @@ const BookTicketPage = () => {
 
   const handleDateSelect = (selectedDate) => {
     console.log('Selected Date:', selectedDate.toDateString());
-    
     setDateS(selectedDate.toDateString());
   };
   return (
@@ -123,23 +140,30 @@ const BookTicketPage = () => {
         {movieData?.name}
       </div>
       <DateCarousel onSelectDate={handleDateSelect} setDateS={setDateS} />
-      <div className="w-full">
-        <div className="border-2 rounded-xl w-[95%] mx-auto h-20 flex p-2 my-2">
-          <div className="w-[30%]">
-            <div className="font-bold text-xl px-[10%]">Theatre Name</div>
-            <div className="px-[10%]">Address</div>
-          </div>
-          <div className="w-[70%] flex cursor-pointer">
-            <div
-              onClick={() => { setModal(true); setOpen(o => !o); }}
-              className="border-2 w-20 text-center rounded-xl text-xl font-bold flex flex-col justify-center"
-            >
-              12:00
+      {
+        theatredata?.map((item,id) => (
+            <div className="w-full">
+            <div className="border-2 rounded-xl w-[95%] mx-auto h-20 flex p-2 my-2">
+              <div className="w-[30%]">
+                <div className="font-bold text-xl px-[10%]">{item?.name}</div>
+                <div className="px-[10%]">{item.address}</div>
+              </div>
+              <div className="w-[70%] flex cursor-pointer gap-4">
+                {
+                  item.shows?.map((val,id1) => (
+                    <div
+                      onClick={() => { setModal(true); setOpen(o => !o); }}
+                      className="p-2 border-2 text-center rounded-xl text-xl font-bold flex flex-col justify-center"
+                    >
+                      {val.showname}
+                    </div>
+                  ))
+                }
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      
+        ))
+      }
       <Popup open={open} closeOnDocumentClick onClose={closeModal}   modal nested>
         {
           close => (

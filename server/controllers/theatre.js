@@ -59,11 +59,8 @@ const getTheatres = async (req, res, next) => {
 
 const getTheatreShows = async (req,res) => {
     try {
-        
         const theatreId = req.params.id;
-        
         const theatre = await theatreSchema.findById(theatreId).populate('shows');
-     
         if(!theatre){
             return res.status(404).json({ error: 'theatre not found' });
         }

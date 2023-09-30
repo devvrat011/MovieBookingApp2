@@ -22,7 +22,6 @@ function Home() {
           {
               Movie.map( (list,index) => {
                 return (
-                 
                     <div className=' rounded-xl border-black h-96 w-[22.5%]'>
                        {
                         loading ? (
