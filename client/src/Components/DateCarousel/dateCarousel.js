@@ -5,11 +5,9 @@ import 'slick-carousel/slick/slick-theme.css';
 import "./dateCarousel.css";
 const DateCarousel = ({ onSelectDate }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
-    console.log(selectedDate);
   const dateRange = [];
   const startDate = new Date();
   startDate.setDate(startDate.getDate());
-    console.log(selectedDate.toDateString());
   for (let i = 0; i <9; i++) {
     const currentDate = new Date(startDate);
     currentDate.setDate(startDate.getDate() + i);

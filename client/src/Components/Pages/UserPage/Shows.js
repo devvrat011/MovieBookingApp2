@@ -10,8 +10,10 @@ function Shows() {
     const [open2, setOpen2] = useState(false);
     const [data, setData] = useState({ showname: "", date: "", time: "", movie: "",ticketPrice: "", totalSeat: "" });
     const [listdata,setListData]=useState([]);
-    const {addShows,clickid,getTheatre,updateTheatre,getShows} = useContext(context);
+    const {addShows,updateMovie,clickid,getMovie,getTheatre,updateTheatre,getShows,setclickid,Movie} = useContext(context);
     const [isLoading,setisLoading]=useState();
+    const [oldId,setOldId] = useState(0);
+
     const closeModal = () => {
         setOpen(false);
         setListData();
@@ -24,9 +26,8 @@ function Shows() {
         const fetchbtn = async() => {
             if(clickid){
                 try {
-
-                    setisLoading(true); 
-
+                    setisLoading(true);
+                    setOldId(clickid);
                     const fetchedData = [];
                     const response = await fetch(`http://localhost:8000/theatre/${clickid}/shows`, {
                         method: 'GET',
@@ -39,11 +40,11 @@ function Shows() {
                     fetchedData.push(res.ShowsOwned);
                     setListData(fetchedData[0]);
                     setisLoading(false);
-                 
+                    setclickid();
                 }
                 catch (err) {
                     console.log(err);
-                    setisLoading(false)
+                    setisLoading(false);
                 }
             }
         }
@@ -52,11 +53,25 @@ function Shows() {
 
     const save = async() => {
         const res  = await addShows(data);
-        const theatre = await getTheatre(clickid);
+        const theatre = await getTheatre(oldId);
         theatre.shows.push(res.newShow._id);
-        await updateTheatre(clickid,theatre);
-        const show = await getShows(res.newShow._id);
-        setListData(prevListData => [...prevListData, show]);
+        await updateTheatre(oldId,theatre);
+        let movId = 0;
+        for (var i = 0; i < Movie.length; i++){
+            if (Movie[i].name == data.movie){
+                movId = Movie[i]._id;
+            }
+        }
+        // console.log(ovId);
+        const movie = await getMovie(movId);
+        // const id3 = movie.theatres[0];
+        if (!movie.theatres.includes(oldId)){
+            movie.theatres.push(oldId);
+            const now = await updateMovie(movId,movie);
+            // console.log(movie.theatres);
+        }
+        console.log(movie.theatres);
+        setclickid(oldId);
     }
     return (
         <>
@@ -86,7 +101,7 @@ function Shows() {
                                 {isLoading ? (
                                         <div>Loading...</div>
                                     ):(listdata?.length) ? <div className="flex px-5 py-2">
-                                    <div className="w-[10%] text-center flex flex-col justify-center ">
+                                    <div className="w-[20%] text-center flex flex-col justify-center ">
                                         ShowName
                                     </div>
                                     <div className="w-[20%] text-center flex flex-col justify-center ">
@@ -111,7 +126,7 @@ function Shows() {
                                     <li className="list-group-item border-2 border-black rounded-2xl my-1 px-5 py-2 flex justify-between  d-flex justify-content-between"
                                         key={index}>
                                         <div className="flex w-full ">
-                                            <div className="w-[10%] text-center flex flex-col justify-center ">
+                                            <div className="w-[20%] text-center flex flex-col justify-center ">
                                                 {item?.showname}
                                             </div>
                                             <div className="w-[20%] text-center flex flex-col justify-center ">
@@ -171,10 +186,13 @@ function Shows() {
                             </div>
                             <div className='flex w-[100%] justify-between gap-3'>
                                 <div className='flex-col w-[35%]'>
-                                    <div>
-                                        Show Name
-                                    </div>
-                                    <input onChange={(e) => setData({...data, showname: e.target.value})} type='text' className='border-2 rounded-lg w-[100%]'/>
+                                    <div>Shows</div>
+                                    <select onChange={(e) => setData({ ...data, showname: e.target.value })} className="border-2 rounded-lg w-[100%]">
+                                        <option>choose shows...</option>
+                                        <option>Morning Show</option>
+                                        <option>Evening Show</option> 
+                                        <option>Night Show</option> 
+                                    </select>
                                 </div>
                                 <div className='flex-col w-[35%]'>
                                     <div>
@@ -191,10 +209,15 @@ function Shows() {
                             </div>
                             <div className='flex w-[100%] justify-between gap-3'>
                                 <div className='flex-col w-[35%]'>
-                                    <div>
-                                        Movie
-                                    </div>
-                                    <input onChange={(e) => setData({...data, movie: e.target.value})} type='text' className='border-2 rounded-lg w-[100%]'/>
+                                    <div>Movie</div>
+                                    <select onChange={(e) => {setData({ ...data, movie: e.target.value });}} className="border-2 rounded-lg w-[100%]">
+                                        <option>choose movie...</option>
+                                        {
+                                            Movie.map((item, index) => (
+                                                <option>{item?.name}</option>
+                                            ))
+                                        }
+                                    </select>
                                 </div>
                                 <div className='flex-col w-[35%]'>
                                     <div>
