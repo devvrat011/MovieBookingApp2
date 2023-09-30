@@ -10,7 +10,7 @@ function Shows() {
     const [open2, setOpen2] = useState(false);
     const [data, setData] = useState({ showname: "", date: "", time: "", movie: "",ticketPrice: "", totalSeat: "" });
     const [listdata,setListData]=useState([]);
-    const {addShows,clickid,getTheatre,updateTheatre,getShows} = useContext(context);
+    const {addShows,clickid,getTheatre,updateTheatre,getShows,setclickid} = useContext(context);
     const [isLoading,setisLoading]=useState();
     const closeModal = () => {
         setOpen(false);
@@ -39,7 +39,8 @@ function Shows() {
                     fetchedData.push(res.ShowsOwned);
                     setListData(fetchedData[0]);
                     setisLoading(false);
-                 
+                    setclickid();
+                    
                 }
                 catch (err) {
                     console.log(err);
