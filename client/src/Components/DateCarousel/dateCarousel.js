@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import "./dateCarousel.css";
-const DateCarousel = ({ onSelectDate }) => {
+const DateCarousel = ({ onSelectDate,setDateS }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
-    console.log(selectedDate);
+    // console.log(selectedDate);
   const dateRange = [];
   const startDate = new Date();
+  // setDateS(startDate.toDateString());
   startDate.setDate(startDate.getDate());
-    console.log(selectedDate.toDateString());
+    // console.log(selectedDate.toDateString());
   for (let i = 0; i <9; i++) {
     const currentDate = new Date(startDate);
     currentDate.setDate(startDate.getDate() + i);
@@ -33,14 +34,14 @@ const DateCarousel = ({ onSelectDate }) => {
     const options = { month: 'short', day: 'numeric' };
     return date.toLocaleDateString(undefined, options);
   };
-
+  let sliderRef = useRef(null); 
   return (
     <div className="date-carousel">
-      <Slider {...settings}>
+      <Slider {...settings} ref={sliderRef}>
         {dateRange.map((date, index) => (
           <div
             key={index}
-            className={`date-card rounded-2xl w-[20%] ${date.toDateString() === selectedDate.toDateString() ? 'selected' : ''}`}
+            className={`date-card  rounded-2xl  w-[20%] ${date.toDateString()===selectedDate.toDateString() ? 'selected' : ''}`}
           >
             {date.toLocaleString('en-US', { month: 'short' })}<br></br>
             {date.getDate()}<br></br>
@@ -48,6 +49,7 @@ const DateCarousel = ({ onSelectDate }) => {
             {/* {formatDate(date)} */}
           </div>
         ))}
+          {/* <button onClick={() => sliderRef.current.slickNext()}>Next &rarr;</button> */}
       </Slider>
     </div>
   );
