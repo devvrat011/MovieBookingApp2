@@ -29,6 +29,9 @@ const theatreSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Shows',
     }],
+    bookedSeats:[{
+        type:Number
+    }]
 },
 );
 

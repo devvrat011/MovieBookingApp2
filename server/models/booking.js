@@ -25,7 +25,11 @@ const bookingSchema = new mongoose.Schema({
     type:Number,
     required: true,
     unique:false,
-  }
+  },
+  seats:[{
+    type:Number,
+    required:true,
+  }]
   
 });
 

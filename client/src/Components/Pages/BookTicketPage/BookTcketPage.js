@@ -10,6 +10,8 @@ import DateCarousel from "../../DateCarousel/dateCarousel";
 const BookTicketPage = () => {
 
   const [modal, setModal] = useState(false);
+  const startDate = new Date();
+  const [dateS,setDateS]=useState(startDate.toDateString());
   const {id} = useParams();
   const {getMovie,movieData,getTheatre,getShows}=useContext(context);
   const [theatredata,setTheatreData]  = useState();
@@ -18,7 +20,6 @@ const BookTicketPage = () => {
     useEffect(()=>{
         getMovie(id);
     },[]);
-
     useEffect(() => {
       const find = async() => {
         const fetchedData = [];
@@ -34,7 +35,6 @@ const BookTicketPage = () => {
       }
       find();
     },[movieData])
-    
   const [change,setChange] =useState(false);
   const [data, setData] = useState({ name: "dfa", theatre: "dfaj", date: "adf", time: "adf", amount: 100 });
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -67,7 +67,7 @@ const BookTicketPage = () => {
 
     if (isSelected) {
       setSelectedSeats((prevSelectedSeats) =>
-        prevSelectedSeats.filter(
+        prevSelectedSeats?.filter(
           (selectedSeat) =>
             selectedSeat.row !== row || selectedSeat.col !== col
         )
@@ -82,18 +82,26 @@ const BookTicketPage = () => {
     if(change)
     {
       confirmBooking(data);
+      setSelectedSeats([]);
       setChange(false);
     }
   },[data,change])
 
   const save =async () => {
-      setData({...data, name: "dshdj", date: "2023-06-10",
-      time: "19:30", theatre: "6503e39b7e191d9ca497d879", amount: 420});
+      
+      const seats=[];
+      selectedSeats?.map((seat, key) => {   
+            seats.push((seat.row - 1) * 5 + seat.col)
+          }   
+      )
+      console.log(seats);
+      setData({...data, name: "dshdj",theatre: "6503e39b7e191d9ca497d879", date: dateS,
+      time: "19:30", amount: 420,seats:seats});
       setChange(true);
   }
 
   const isSelectedSeat = (seat) =>
-    selectedSeats.some(
+    selectedSeats?.some(
       (selectedSeat) =>
         selectedSeat.row === seat.row && selectedSeat.col === seat.col
     );
@@ -120,8 +128,10 @@ const BookTicketPage = () => {
     }
     return grid;
   };
+
   const handleDateSelect = (selectedDate) => {
-    console.log('Selected Date:', selectedDate);
+    console.log('Selected Date:', selectedDate.toDateString());
+    setDateS(selectedDate.toDateString());
   };
   return (
     <div>
@@ -129,7 +139,7 @@ const BookTicketPage = () => {
       <div className="border-2 w-full h-28 flex flex-col justify-center px-4 font-bold text-3xl">
         {movieData?.name}
       </div>
-      <DateCarousel onSelectDate={handleDateSelect}/>
+      <DateCarousel onSelectDate={handleDateSelect} setDateS={setDateS} />
       {
         theatredata?.map((item,id) => (
             <div className="w-full">
@@ -154,7 +164,6 @@ const BookTicketPage = () => {
           </div>
         ))
       }
-      
       <Popup open={open} closeOnDocumentClick onClose={closeModal}   modal nested>
         {
           close => (
@@ -173,9 +182,9 @@ const BookTicketPage = () => {
               </div>
               <div className="text-center font-bold">Screen</div>
               <div className="h-1.5 bg-gray-500 rounded-br-[900%] rounded-bl-[900%]"></div>
-              {selectedSeats.length ?
+              {selectedSeats?.length ?
                 (<div className="text-center mt-4">
-                  <span className="font-bold">Selected Seats :</span> {selectedSeats.length}<br></br>
+                  <span className="font-bold">Selected Seats :</span> {selectedSeats?.length}<br></br>
                   <div className="flex gap-2 w-min  mx-auto mt-2">
                     {selectedSeats.map((seat, key) => {
                       return (
@@ -188,7 +197,7 @@ const BookTicketPage = () => {
                   <div onClick={() => {
                     save();
                   }} className="border-2 p-2 rounded-xl mt-4 font-bold w-[40%] mx-auto bg-blue-600 text-white shadow-2xl cursor-pointer hover:scale-105">
-                    Pay Rs {selectedSeats.length * 100}
+                    Pay Rs {selectedSeats?.length * 100}
                   </div>
                 </div>) : ""}
             </div>
