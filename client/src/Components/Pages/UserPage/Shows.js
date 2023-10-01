@@ -62,12 +62,14 @@ function Shows() {
         const theatre = await getTheatre(oldId);
         theatre.shows.push(res.newShow._id);
         await updateTheatre(oldId,theatre);
+
       
         const movie = await getMovie(movId);
         
         if (!movie.theatres.includes(oldId)){
             movie?.theatres.push(oldId);
             const now = await updateMovie(movId,movie);
+
         }
         // console.log(movie.theatres);
         setclickid(oldId);

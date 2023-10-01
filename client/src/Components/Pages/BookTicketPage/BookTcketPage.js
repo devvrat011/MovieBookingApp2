@@ -15,6 +15,7 @@ const BookTicketPage = () => {
   const {id} = useParams();
   const {getMovie,movieData,getTheatre,getShows}=useContext(context);
   const [theatredata,setTheatreData]  = useState();
+
   const [some,setSome] = useState(true);
   
     useEffect(()=>{
@@ -38,6 +39,7 @@ const BookTicketPage = () => {
       find();
     },[movieData,dateS])
   
+
   const [change,setChange] =useState(false);
   const [data, setData] = useState({ name: "dfa", theatre: "dfaj", date: "adf", time: "adf", amount: 100 });
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -144,7 +146,10 @@ const BookTicketPage = () => {
       </div>
       <DateCarousel onSelectDate={handleDateSelect} setDateS={setDateS} />
       {
-        theatredata?.map((item,id) => (
+        (loading) ? 
+        <div >Loading...</div> :
+        (
+          theatredata?.map((item,id) => (
             <div className="w-full">
             <div className="border-2 rounded-xl w-[95%] mx-auto h-20 flex p-2 my-2">
               <div className="w-[30%]">
@@ -158,7 +163,7 @@ const BookTicketPage = () => {
                       onClick={() => { setModal(true); setOpen(o => !o); }}
                       className="p-2 border-2 text-center rounded-xl text-xl font-bold flex flex-col justify-center"
                     >
-                      {val.showname}
+                      {val.time}
                     </div>
                   ))
                 }
@@ -166,6 +171,7 @@ const BookTicketPage = () => {
             </div>
           </div>
         ))
+        ) 
       }
       <Popup open={open} closeOnDocumentClick onClose={closeModal}   modal nested>
         {

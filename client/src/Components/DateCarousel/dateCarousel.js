@@ -17,7 +17,7 @@ const DateCarousel = ({ onSelectDate,setDateS }) => {
 
   const settings = {
     centerMode:true,
-    infinite: true,
+    // infinite: true,
     centerPadding: '0',
     slidesToShow: 5,
     speed: 500,
