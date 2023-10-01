@@ -8,6 +8,7 @@ const {
     updateTheatre,
     getTheatres,
     getTheatreShows,
+    
 } = require("../controllers/theatre");
 
 router.post("/add",addTheatre);

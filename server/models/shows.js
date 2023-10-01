@@ -17,9 +17,17 @@ const showSchema = new mongoose.Schema({
     unique:false,
   },
   movie:{
-    type: String,
+    id:{
+      type: mongoose.Schema.Types.ObjectId,
     required: true,
     unique:false,
+    } ,
+    name:{
+      type: String,
+      required: true,
+      unique:false,
+    }
+    
   },
   ticketPrice: {
     type: Number,

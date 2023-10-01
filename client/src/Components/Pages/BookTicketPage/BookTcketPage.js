@@ -15,34 +15,31 @@ const BookTicketPage = () => {
   const {id} = useParams();
   const {getMovie,movieData,getTheatre,getShows}=useContext(context);
   const [theatredata,setTheatreData]  = useState();
-  const [loading,setloading] = useState(true);
-   
-    useEffect(() => {
-      const fetchData = async () => {
+
+  const [some,setSome] = useState(true);
+  
+    useEffect(()=>{
         getMovie(id);
-        setloading(true);
-        try {
-          const fetchedData = await Promise.all(
-            movieData.theatres.map(async (theatreId) => {
-              const theatre = await getTheatre(theatreId);
-              const shows = await Promise.all(
-                theatre.shows.map(async (showId) => {
-                  const show = await getShows(showId);
-                  return show.movie === movieData.name ? show : null;
-                })
-              );
-              return { ...theatre, shows: shows.filter((show) => show !== null) };
-            })
-          );
-          setTheatreData(fetchedData);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        } finally {
-          setloading(false);
-        }
-      };
-      fetchData();
-    }, [id]);
+    },[]);
+
+    useEffect(() => {
+      const find = async() => {
+        const fetchedData = [];
+
+        const response = await fetch(`http://localhost:8000/movie/${id}/theatres?date=${dateS}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+        const res = await response.json();
+        fetchedData.push(res.TheatresOwned);
+        setTheatreData(fetchedData[0]);
+      }
+      find();
+    },[movieData,dateS])
+  
+
   const [change,setChange] =useState(false);
   const [data, setData] = useState({ name: "dfa", theatre: "dfaj", date: "adf", time: "adf", amount: 100 });
   const [selectedSeats, setSelectedSeats] = useState([]);
