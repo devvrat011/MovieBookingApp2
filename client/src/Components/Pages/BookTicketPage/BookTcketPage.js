@@ -15,26 +15,34 @@ const BookTicketPage = () => {
   const {id} = useParams();
   const {getMovie,movieData,getTheatre,getShows}=useContext(context);
   const [theatredata,setTheatreData]  = useState();
-  const [some,setSome] = useState(true);
+  const [loading,setloading] = useState(true);
    
-    useEffect(()=>{
-        getMovie(id);
-    },[]);
     useEffect(() => {
-      const find = async() => {
-        const fetchedData = [];
-        for(let i=0;i<movieData.theatres.length;i++){
-          const res = await getTheatre(movieData.theatres[i]);
-          for(let j=0;j<res.shows.length;j++){
-            const value = await getShows(res.shows[j]);
-            res.shows[j] = value;
-          }
-          fetchedData.push(res);
+      const fetchData = async () => {
+        getMovie(id);
+        setloading(true);
+        try {
+          const fetchedData = await Promise.all(
+            movieData.theatres.map(async (theatreId) => {
+              const theatre = await getTheatre(theatreId);
+              const shows = await Promise.all(
+                theatre.shows.map(async (showId) => {
+                  const show = await getShows(showId);
+                  return show.movie === movieData.name ? show : null;
+                })
+              );
+              return { ...theatre, shows: shows.filter((show) => show !== null) };
+            })
+          );
+          setTheatreData(fetchedData);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        } finally {
+          setloading(false);
         }
-        setTheatreData(fetchedData);
-      }
-      find();
-    },[movieData])
+      };
+      fetchData();
+    }, [id]);
   const [change,setChange] =useState(false);
   const [data, setData] = useState({ name: "dfa", theatre: "dfaj", date: "adf", time: "adf", amount: 100 });
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -141,7 +149,10 @@ const BookTicketPage = () => {
       </div>
       <DateCarousel onSelectDate={handleDateSelect} setDateS={setDateS} />
       {
-        theatredata?.map((item,id) => (
+        (loading) ? 
+        <div >Loading...</div> :
+        (
+          theatredata?.map((item,id) => (
             <div className="w-full">
             <div className="border-2 rounded-xl w-[95%] mx-auto h-20 flex p-2 my-2">
               <div className="w-[30%]">
@@ -155,7 +166,7 @@ const BookTicketPage = () => {
                       onClick={() => { setModal(true); setOpen(o => !o); }}
                       className="p-2 border-2 text-center rounded-xl text-xl font-bold flex flex-col justify-center"
                     >
-                      {val.showname}
+                      {val.time}
                     </div>
                   ))
                 }
@@ -163,6 +174,7 @@ const BookTicketPage = () => {
             </div>
           </div>
         ))
+        ) 
       }
       <Popup open={open} closeOnDocumentClick onClose={closeModal}   modal nested>
         {
