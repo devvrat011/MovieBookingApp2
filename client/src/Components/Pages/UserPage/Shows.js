@@ -8,7 +8,7 @@ import context from '../../../Context/context';
 function Shows() {
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
-    const [data, setData] = useState({ showname: "", date: "", time: "", movie: "",ticketPrice: "", totalSeat: "" });
+    const [data, setData] = useState({ showname: "", date: "", time: "", movie:{},ticketPrice: "", totalSeat: "" });
     const [listdata,setListData]=useState([]);
     const {addShows,updateMovie,clickid,getMovie,getTheatre,updateTheatre,getShows,setclickid,Movie} = useContext(context);
     const [isLoading,setisLoading]=useState();
@@ -39,8 +39,9 @@ function Shows() {
                     console.log(res);
                     fetchedData.push(res.ShowsOwned);
                     setListData(fetchedData[0]);
-                    setisLoading(false);
                     setclickid();
+                    setisLoading(false);
+                    
                 }
                 catch (err) {
                     console.log(err);
@@ -52,26 +53,25 @@ function Shows() {
     },[clickid])
 
     const save = async() => {
+       
         const res  = await addShows(data);
+        // console.log(res);
+    
+        const movId=res.newShow.movie.id;
+    
         const theatre = await getTheatre(oldId);
         theatre.shows.push(res.newShow._id);
         await updateTheatre(oldId,theatre);
-        let movId = 0;
-        for (var i = 0; i < Movie.length; i++){
-            if (Movie[i].name == data.movie){
-                movId = Movie[i]._id;
-            }
-        }
-        // console.log(ovId);
+      
         const movie = await getMovie(movId);
-        // const id3 = movie.theatres[0];
+        
         if (!movie.theatres.includes(oldId)){
-            movie.theatres.push(oldId);
+            movie?.theatres.push(oldId);
             const now = await updateMovie(movId,movie);
-            // console.log(movie.theatres);
         }
-        console.log(movie.theatres);
+        // console.log(movie.theatres);
         setclickid(oldId);
+        
     }
     return (
         <>
@@ -136,27 +136,14 @@ function Shows() {
                                                 {item?.time}
                                             </div>
                                             <div className="w-[20%] text-center flex flex-col justify-center ">
-                                                {item?.movie}
-                                            </div>
+                                                {item?.movie?.name}                                            </div>
                                             <div className="w-[20%] text-center flex flex-col justify-center">
                                                 {item?.ticketPrice}
                                             </div>
                                             <div className="w-[10%] text-center flex flex-col justify-center">
                                                 {item?.totalSeat}
                                             </div>
-                                            {/* <div className="flex mx-auto gap-3">
-                                                <button
-                                                    className="btn flex flex-col justify-center btn-light  bg-blue-700 text-white px-2"
-                                                >
-                                                    Delete
-                                                </button>
-                                                <button
-                                                    className="btn flex flex-col justify-center btn-light  bg-blue-700 text-white px-2 "
-                                                    // onClick={() => editItem(index)}
-                                                >
-                                                    Edit
-                                                </button>
-                                            </div> */}
+                                          
                                         </div>
                                     </li>
                                 ))}
@@ -210,11 +197,11 @@ function Shows() {
                             <div className='flex w-[100%] justify-between gap-3'>
                                 <div className='flex-col w-[35%]'>
                                     <div>Movie</div>
-                                    <select onChange={(e) => {setData({ ...data, movie: e.target.value });}} className="border-2 rounded-lg w-[100%]">
+                                    <select onChange={(e) => {setData({ ...data, movie:{ id:e.target.value,name: e.target.options[e.target.selectedIndex].text} });}} className="border-2 rounded-lg w-[100%]">
                                         <option>choose movie...</option>
                                         {
                                             Movie.map((item, index) => (
-                                                <option>{item?.name}</option>
+                                                <option value={item?._id}>{item?.name}</option>
                                             ))
                                         }
                                     </select>

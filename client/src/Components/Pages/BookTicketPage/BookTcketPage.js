@@ -16,25 +16,28 @@ const BookTicketPage = () => {
   const {getMovie,movieData,getTheatre,getShows}=useContext(context);
   const [theatredata,setTheatreData]  = useState();
   const [some,setSome] = useState(true);
-   
+  
     useEffect(()=>{
         getMovie(id);
     },[]);
+
     useEffect(() => {
       const find = async() => {
         const fetchedData = [];
-        for(let i=0;i<movieData.theatres.length;i++){
-          const res = await getTheatre(movieData.theatres[i]);
-          for(let j=0;j<res.shows.length;j++){
-            const value = await getShows(res.shows[j]);
-            res.shows[j] = value;
-          }
-          fetchedData.push(res);
-        }
-        setTheatreData(fetchedData);
+
+        const response = await fetch(`http://localhost:8000/movie/${id}/theatres?date=${dateS}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+        const res = await response.json();
+        fetchedData.push(res.TheatresOwned);
+        setTheatreData(fetchedData[0]);
       }
       find();
-    },[movieData])
+    },[movieData,dateS])
+  
   const [change,setChange] =useState(false);
   const [data, setData] = useState({ name: "dfa", theatre: "dfaj", date: "adf", time: "adf", amount: 100 });
   const [selectedSeats, setSelectedSeats] = useState([]);
