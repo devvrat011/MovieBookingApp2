@@ -62,13 +62,10 @@ function Shows() {
                 movId = Movie[i]._id;
             }
         }
-        // console.log(ovId);
         const movie = await getMovie(movId);
-        // const id3 = movie.theatres[0];
         if (!movie.theatres.includes(oldId)){
             movie.theatres.push(oldId);
-            const now = await updateMovie(movId,movie);
-            // console.log(movie.theatres);
+            await updateMovie(movId,movie);
         }
         console.log(movie.theatres);
         setclickid(oldId);
