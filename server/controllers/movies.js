@@ -75,7 +75,6 @@ const formatDate=(date)=>{
     .filter(part => part.type !== 'literal')
     .map(part => part.value)
     .join(' ');
-    // console.log(formattedDate);
     return formattedDate;
 }
 

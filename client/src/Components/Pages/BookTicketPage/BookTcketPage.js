@@ -15,9 +15,10 @@ const BookTicketPage = () => {
   const {id} = useParams();
   const {getMovie,movieData,getTheatre,getShows}=useContext(context);
   const [theatredata,setTheatreData]  = useState();
-
+  const [clickData,setclickData]=useState();
+  const [clickTheatre,setClickTheatre]=useState();
   const [some,setSome] = useState(true);
-  
+  console.log(clickData);
     useEffect(()=>{
         getMovie(id);
     },[]);
@@ -100,8 +101,8 @@ const BookTicketPage = () => {
           }   
       )
       console.log(seats);
-      setData({...data, name: "dshdj",theatre: "6503e39b7e191d9ca497d879", date: dateS,
-      time: "19:30", amount: 420,seats:seats});
+      setData({...data, name:clickTheatre.name,theatre:clickTheatre._id, date: dateS,
+      time:clickData.time, amount:clickData.ticketPrice,seats:seats});
       setChange(true);
   }
 
@@ -146,32 +147,30 @@ const BookTicketPage = () => {
       </div>
       <DateCarousel onSelectDate={handleDateSelect} setDateS={setDateS} />
       {
-        // (loading) ? 
-        // <div >Loading...</div> :
-        // (
           theatredata?.map((item,id) => (
-            <div className="w-full">
-            <div className="border-2 rounded-xl w-[95%] mx-auto h-20 flex p-2 my-2">
-              <div className="w-[30%]">
-                <div className="font-bold text-xl px-[10%]">{item?.name}</div>
-                <div className="px-[10%]">{item.address}</div>
+            item.shows?.length?
+              (<div className="w-full">
+              <div className="border-2 rounded-xl w-[95%] mx-auto h-20 flex p-2 my-2">
+                <div className="w-[30%]">
+                  <div className="font-bold text-xl px-[10%]">{item?.name}</div>
+                  <div className="px-[10%]">{item.address}</div>
+                </div>
+                <div className="w-[70%] flex cursor-pointer gap-4">
+                  {
+                    item.shows?.map((val,id1) => (
+                      <div
+                        onClick={() => {setClickTheatre(item);setclickData(item.shows[id1]) ;setModal(true); setOpen(o => !o); }}
+                        className="p-2 border-2 text-center rounded-xl text-xl font-bold flex flex-col justify-center"
+                      >
+                        {val.time}
+                      </div>
+                    ))
+                  }
+                </div>
               </div>
-              <div className="w-[70%] flex cursor-pointer gap-4">
-                {
-                  item.shows?.map((val,id1) => (
-                    <div
-                      onClick={() => { setModal(true); setOpen(o => !o); }}
-                      className="p-2 border-2 text-center rounded-xl text-xl font-bold flex flex-col justify-center"
-                    >
-                      {val.time}
-                    </div>
-                  ))
-                }
-              </div>
-            </div>
-          </div>
+            </div>):""
+            
         ))
-        // ) 
       }
       <Popup open={open} closeOnDocumentClick onClose={closeModal}   modal nested>
         {
