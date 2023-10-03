@@ -147,7 +147,6 @@ const BookTicketPage = () => {
       </div>
       <DateCarousel onSelectDate={handleDateSelect} setDateS={setDateS} />
       {
-        
           theatredata?.map((item,id) => (
             item.shows?.length?
               (<div className="w-full">
@@ -172,7 +171,6 @@ const BookTicketPage = () => {
             </div>):""
             
         ))
-        
       }
       <Popup open={open} closeOnDocumentClick onClose={closeModal}   modal nested>
         {

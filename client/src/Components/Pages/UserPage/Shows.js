@@ -36,12 +36,11 @@ function Shows() {
                         },
                     });
                     const res = await response.json();
-                    console.log(res);
+                    // console.log(res);
                     fetchedData.push(res.ShowsOwned);
                     setListData(fetchedData[0]);
                     setclickid();
                     setisLoading(false);
-                    
                 }
                 catch (err) {
                     console.log(err);
