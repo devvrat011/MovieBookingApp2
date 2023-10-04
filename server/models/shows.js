@@ -39,6 +39,9 @@ const showSchema = new mongoose.Schema({
     required:true,
     unique:false,
   },
+  bookedSeats:[{
+    type:Number
+  }]
 });
 
 module.exports = mongoose.model('Shows', showSchema);

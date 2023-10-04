@@ -13,6 +13,19 @@ async function addShows(req, res) {
       }
 }
 
+const updateShow = async (req, res, next) => {
+  try {
+      const updatedShow = await showSchema.findByIdAndUpdate(
+          req.params.id,
+          { $set: req.body },
+          { new: true }
+          );
+          res.status(200).json(updatedShow);
+      } catch (err) {
+      next(err);
+  }
+};
+
 const getShows = async (req,res,next) => {
   try {
     const Show = await showSchema.find();
@@ -36,4 +49,5 @@ module.exports= ({
     addShows,
     getShows,
     getShow,
+    updateShow,
 })

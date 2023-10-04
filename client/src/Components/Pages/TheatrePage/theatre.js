@@ -53,6 +53,7 @@ const AddTheatre = () => {
 						...arr,
 						status: false,
 					};
+
 					const response = await fetch(`http://localhost:8000/theatre/${id2}`, {
 						method: 'PUT',
 						headers: {
@@ -60,6 +61,7 @@ const AddTheatre = () => {
 						},
 						body: JSON.stringify(updatedTheatreData),
 					});
+					
 					setApprove(prevApprove => prevApprove.filter(theater => theater._id !== id2));
 					setPending(prevPending => [...prevPending, arr])
 					const res = await response.json();

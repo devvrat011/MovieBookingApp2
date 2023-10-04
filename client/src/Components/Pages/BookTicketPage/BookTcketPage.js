@@ -13,10 +13,11 @@ const BookTicketPage = () => {
   const startDate = new Date();
   const [dateS,setDateS]=useState(startDate.toDateString());
   const {id} = useParams();
-  const {getMovie,movieData,getTheatre,getShows,user,updateUser}=useContext(context);
+  const {getMovie,movieData,getTheatre,getShows,updateShow,getShow}=useContext(context);
   const [theatredata,setTheatreData]  = useState();
   const [clickData,setclickData]=useState();
   const [clickTheatre,setClickTheatre]=useState();
+  const [bookingseats,setBookingSeats] = useState([]);
   const [some,setSome] = useState(true);
   console.log(clickData);
     useEffect(()=>{
@@ -56,14 +57,16 @@ const BookTicketPage = () => {
           },
           body: JSON.stringify(data),
         });
-        const res = await response.json();
-        user.bookingMovies.push(res.newBooking._id);
-        const updatedUserData = {
-            ...user,
-            bookingMovies: user.bookingMovies,
-        };
-        const updateUserResponse = await updateUser(user._id,updatedUserData);
-        console.log(await updateUserResponse.json());
+        await response.json();
+        const show_id=clickData._id;
+        const res = await getShows(show_id);
+        const temp = res.bookedSeats;
+        selectedSeats.map((items,id) => (
+          temp.push((items.row - 1) * 5 + items.col)
+        ))
+        res.bookedSeats = temp;
+        const hello = await updateShow(clickData._id,res);
+        console.log(hello);
     } catch (e) {
       console.log(e);
     }
@@ -111,6 +114,11 @@ const BookTicketPage = () => {
       setChange(true);
   }
 
+  const getBookedSeats = async() => {
+    const res = await getShows(clickData._id);
+    setBookingSeats(res.bookedSeats);
+  }
+
   const isSelectedSeat = (seat) =>
     selectedSeats?.some(
       (selectedSeat) =>
@@ -119,21 +127,33 @@ const BookTicketPage = () => {
 
   const generateSeatsGrid = () => {
     const grid = [];
+    console.log(bookingseats);
     let c = 0;
     for (let row = 1; row <= rows; row++) {
       for (let col = 1; col <= cols; col++) {
         const seat = { row, col };
         c++;
+        const check = (row - 1) * 5 + col;
         const isSelected = isSelectedSeat(seat);
         grid.push(
-          <div
+         (!bookingseats?.includes(check)) ? (
+            <div
             key={c}
             className={`w-10 h-10 shadow-2xl rounded-lg hover:scale-105 flex-col flex justify-center border-gray-500 text-center text-lg font-bold ${isSelected ? "bg-blue-500 text-white" : "bg-gray-300"
               } cursor-pointer`}
             onClick={() => toggleSeat(row, col)}
           >
-            {c}
-          </div>
+          {c}
+            </div>
+            ) : (
+              <div
+            key={c}
+            className={`w-10 h-10 shadow-2xl rounded-lg hover:scale-105 flex-col flex justify-center border-gray-500 text-center text-lg font-bold ${isSelected ? "bg-blue-500 text-white" : "bg-red-600 text-white"
+              }`}
+          >
+          {c}
+            </div>
+         )
         );
       }
     }
@@ -164,7 +184,7 @@ const BookTicketPage = () => {
                   {
                     item.shows?.map((val,id1) => (
                       <div
-                        onClick={() => {setClickTheatre(item);setclickData(item.shows[id1]) ;setModal(true); setOpen(o => !o); }}
+                        onClick={() => {getBookedSeats(); setClickTheatre(item);setclickData(item.shows[id1]) ;setModal(true); setOpen(o => !o); }}
                         className="p-2 border-2 text-center rounded-xl text-xl font-bold flex flex-col justify-center"
                       >
                         {val.time}
