@@ -7,6 +7,7 @@ const User = new mongoose.Schema( {
     quote: {type: String},
     bookingMovies: [{
         type: mongoose.Schema.Types.ObjectId,
+        ref: 'Booking',
     }],
     theatreOwned: [{
         type: mongoose.Schema.Types.ObjectId,

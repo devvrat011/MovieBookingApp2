@@ -27,7 +27,6 @@ const BookTicketPage = () => {
     useEffect(() => {
       const find = async() => {
         const fetchedData = [];
-
         const response = await fetch(`http://localhost:8000/movie/${id}/theatres?date=${dateS}`, {
           method: 'GET',
           headers: {
@@ -102,16 +101,16 @@ const BookTicketPage = () => {
     }
   },[data,change])
 
-  const save =async () => {
-      
+  const save = async() => {
       const seats=[];
       selectedSeats?.map((seat, key) => {   
             seats.push((seat.row - 1) * 5 + seat.col)
           }   
       )
-      console.log(seats);
+      // console.log(seats);
       setData({...data, name:clickTheatre.name,theatre:clickTheatre._id, date: dateS,
       time:clickData.time, amount:clickData.ticketPrice,seats:seats});
+     
       setChange(true);
   }
 
@@ -173,7 +172,6 @@ const BookTicketPage = () => {
       </div>
       <DateCarousel onSelectDate={handleDateSelect} setDateS={setDateS} />
       {
-        
           theatredata?.map((item,id) => (
             item.shows?.length?
               (<div className="w-full">
@@ -198,7 +196,6 @@ const BookTicketPage = () => {
             </div>):""
             
         ))
-        
       }
       <Popup open={open} closeOnDocumentClick onClose={closeModal}   modal nested>
         {
