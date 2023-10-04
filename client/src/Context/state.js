@@ -82,6 +82,8 @@ const ProviderState = ({ children }) => {
     }
   }
 
+  
+
     const addMovie=async(data)=>{
       try {
         const response = await fetch('http://localhost:8000/movie/add', {
@@ -154,6 +156,16 @@ const ProviderState = ({ children }) => {
               body: JSON.stringify(updatemoviedata),
         });
         return updateMovieResponse;
+    }
+    const updateShow = async(id,updateShowdata) => {
+      const updateShowResponse = await fetch(`http://localhost:8000/show/${id}`, {
+              method: 'PUT', 
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(updateShowdata),
+        });
+        return updateShowResponse;
     }
     const getTheatre=async(id)=>{
       try {
@@ -240,7 +252,7 @@ const ProviderState = ({ children }) => {
       find();
     }, [])
     return (
-        <context.Provider value={{getTheatre,getShows,updateTheatre,updateMovie,theatreData,setclickid,clickid,setTheatreData,isusersignin, isAdmin, isprofilename, list,user,Movie,addMovie,deleteItem,getMovie,movieData,id,setId,loading,AddTheatre,updateUser,deleteTheatre,addShows}}>
+        <context.Provider value={{updateShow,getTheatre,getShows,updateTheatre,updateMovie,theatreData,setclickid,clickid,setTheatreData,isusersignin, isAdmin, isprofilename, list,user,Movie,addMovie,deleteItem,getMovie,movieData,id,setId,loading,AddTheatre,updateUser,deleteTheatre,addShows}}>
             { children }
         </context.Provider>
     )
