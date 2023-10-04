@@ -54,17 +54,11 @@ function Shows() {
     const save = async() => {
        
         const res  = await addShows(data);
-        // console.log(res);
-    
         const movId=res.newShow.movie.id;
-    
         const theatre = await getTheatre(oldId);
         theatre.shows.push(res.newShow._id);
         await updateTheatre(oldId,theatre);
-
-      
         const movie = await getMovie(movId);
-        
         if (!movie.theatres.includes(oldId)){
             movie?.theatres.push(oldId);
             const now = await updateMovie(movId,movie);

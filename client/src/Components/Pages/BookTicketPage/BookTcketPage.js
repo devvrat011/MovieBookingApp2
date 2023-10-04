@@ -13,7 +13,7 @@ const BookTicketPage = () => {
   const startDate = new Date();
   const [dateS,setDateS]=useState(startDate.toDateString());
   const {id} = useParams();
-  const {getMovie,movieData,getTheatre,getShows}=useContext(context);
+  const {getMovie,movieData,getTheatre,getShows,user,updateUser}=useContext(context);
   const [theatredata,setTheatreData]  = useState();
   const [clickData,setclickData]=useState();
   const [clickTheatre,setClickTheatre]=useState();
@@ -26,7 +26,6 @@ const BookTicketPage = () => {
     useEffect(() => {
       const find = async() => {
         const fetchedData = [];
-
         const response = await fetch(`http://localhost:8000/movie/${id}/theatres?date=${dateS}`, {
           method: 'GET',
           headers: {
@@ -57,8 +56,14 @@ const BookTicketPage = () => {
           },
           body: JSON.stringify(data),
         });
-        await response.json();
-        // console.log();
+        const res = await response.json();
+        user.bookingMovies.push(res.newBooking._id);
+        const updatedUserData = {
+            ...user,
+            bookingMovies: user.bookingMovies,
+        };
+        const updateUserResponse = await updateUser(user._id,updatedUserData);
+        console.log(await updateUserResponse.json());
     } catch (e) {
       console.log(e);
     }
@@ -93,16 +98,16 @@ const BookTicketPage = () => {
     }
   },[data,change])
 
-  const save =async () => {
-      
+  const save = async() => {
       const seats=[];
       selectedSeats?.map((seat, key) => {   
             seats.push((seat.row - 1) * 5 + seat.col)
           }   
       )
-      console.log(seats);
+      // console.log(seats);
       setData({...data, name:clickTheatre.name,theatre:clickTheatre._id, date: dateS,
       time:clickData.time, amount:clickData.ticketPrice,seats:seats});
+     
       setChange(true);
   }
 

@@ -71,11 +71,27 @@ const getUserTheatres = async (req, res) => {
     }
 };
 
+const getUserBooking = async (req,res) => {
+    try {
+        const userId = req.params.userId;
+        const booking = await User.findById(userId).populate('bookingMovies');
+        if(!booking){
+            return res.status(404).json({ error: 'booking not found' });
+        }
+        const bookingOwned = booking.bookingMovies;
+        res.status(200).json({ bookingOwned });
+    }
+    catch(err) {
+        res.status(500).json({ error: 'Error fetching theaters' });
+    }
+  } 
+
 module.exports= ({
    register,
    login,
    update,
-   getUserTheatres
+   getUserTheatres,
+   getUserBooking,
 });
 
 
