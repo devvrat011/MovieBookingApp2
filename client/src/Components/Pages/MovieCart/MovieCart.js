@@ -32,7 +32,7 @@ function MovieCart() {
                     </div>
                     <div>English,Hindi</div>
                     <div>2h 14m • Action,Adventure</div>
-                    <button onClick={NavigateToBookTicket}>Book Tickets</button>
+                    <button onClick={NavigateToBookTicket} className='BookTicket_button'>Book Tickets</button>
                 </div>
             </div>
         </div>
