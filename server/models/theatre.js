@@ -4,26 +4,46 @@ const theatreSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        unique: true,
+        
     },
     address: {
         type: String,
         required: true,
-        unique: true,
+        
+    },
+    region: {
+        type: String,
+        required: true,
+      
     },
     number: {
         type: Number,
         required: true,
-        unique: true,
+       
     },
     email: {
         type: String,
         required: true,
-        unique: true,
+        
+    },
+    state: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+       
     },
     status:{
         type:Boolean,
         default:false,
+    },
+    location: {
+        lat: {
+          type: Number,
+          required: true,
+        },
+        long: {
+          type: Number,
+          required: true,
+        },
     },
     shows: [{
         type: mongoose.Schema.Types.ObjectId,

@@ -4,6 +4,7 @@ import Navbar from "../Navbars/Navbar";
 import context from '../../../Context/context';
 import { HStack, Skeleton} from '@chakra-ui/react'
 import { Box } from '@chakra-ui/react'
+import Map from '../MapShow/map';
 
 
 function Home() {

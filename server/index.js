@@ -12,7 +12,7 @@ const theatrerouter = require("./routes/theatre");
 const usersrouter=require("./routes/users.js");
 const bookingrouter=require("./routes/booking.js");
 const showrouter = require("./routes/shows");
-
+const stateRouter=require("./routes/stateLoc")
 dotenv.config();
 
 const app = express();
@@ -41,6 +41,8 @@ app.get('/', (req, res) => {
 app.use('/api',usersrouter);
 
 app.use('/booking',bookingrouter);
+
+app.use('/state',stateRouter);
 
 app.post('/api/getuser', authenticate, async (req, res) => {
     const user = await User.findById(req.user.id).select("-password");

@@ -4,6 +4,10 @@ const bcrypt = require('bcryptjs');
 const { body, validationResult } = require('express-validator');
 
 const register=async(req,res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.json({ status: 'error', error: errors.array()[0]?.msg });
+    }
     console.log(req.body);
     try {
         const salt = await bcrypt.genSalt(10);
@@ -24,6 +28,10 @@ const register=async(req,res) => {
 }
 
 const login=async (req,res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors });
+    }
     const user = await User.findOne({
         email: req.body.email,
     });

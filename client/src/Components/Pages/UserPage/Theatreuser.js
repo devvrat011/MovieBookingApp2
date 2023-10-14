@@ -7,10 +7,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import context from '../../../Context/context';
 import Shows from './Shows';
 
+
 function Theatreuser() {
 
-    const {user,AddTheatre,deleteTheatre,updateUser,setclickid} = useContext(context);
-    const [data, setData] = useState({ name: "", address: "", number: "", email: "" });
+    const {user,getStates,updateState,AddTheatre,deleteTheatre,updateUser,setclickid,getState} = useContext(context);
+    const [data, setData] = useState({ name: "", address: "", number: "", email: "",state: "" ,region: "",location:{}});
     const [open, setOpen] = useState(false);
     const [listdata,setListData]=useState([]);
     const showall=(id)=>{
@@ -46,7 +47,7 @@ function Theatreuser() {
                     },
                 });
                 const res = await response.json();
-                // console.log(res);
+                
                 fetchedData.push(res.theatersOwned);
                 setListData(fetchedData[0]);
             }
@@ -55,22 +56,49 @@ function Theatreuser() {
             }
         }
         User();
-    },[])
-
-    const save = async () => {
-        
-        if (data.name && data.email && data.address && data.number) {
-            try {
+    },[]);
+    const [check,setCheck]=useState(false);
+   
+   useEffect(() => {
+        if(check){
+            const find = async() => {
                 const res=await AddTheatre(data);
                 console.log(res);
-                user.theatreOwned.push(res.newTheatre._id);
+                user.theatreOwned.push(res?.newTheatre._id);
                 const updatedUserData = {
                     ...user,
                     theatreOwned: user.theatreOwned,
                 };
                 const updateUserResponse=await updateUser(user._id,updatedUserData)
                 console.log(await updateUserResponse.json());
-                setListData(prevListData => [...prevListData, res.newTheatre]);   
+                setListData(prevListData => [...prevListData, res?.newTheatre]);
+                const stateById=await getState(data.state);
+                stateById.theatres.push(res?.newTheatre._id);
+                const updatedStateData = {
+                    ...stateById,
+                    theatres: stateById.theatres,
+                };
+                const updateStateResponse=await updateState(stateById._id,updatedStateData)
+                console.log(await updateStateResponse.json());
+            }
+            find();
+        }
+   },[check])
+
+    const updateData = (newData) => {
+        setData({ ...data, ...newData });
+        setCheck(true);
+      };
+      const save = async () => {
+        const APIKEY="fdea282050c20d0db06fd5af5caf9945";
+        if (data.name && data.email && data.address && data.region && data.number && data.state) {
+            try {
+                await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${data.region}&appid=${APIKEY}`)
+                .then(response=>response.json())
+                .then(data =>{
+                const newLatLng = { lat: data.coord.lat , long:data.coord.lon };
+                updateData({ location: newLatLng });
+                }); 
             }
             catch (e) {
                 console.log(e);
@@ -86,6 +114,15 @@ function Theatreuser() {
             closeModal();
         }
     }
+
+    const [stateLoc,setStateLoc]=useState([]);
+    useEffect(()=>{
+        const get=async()=>{
+            const res=await getStates();
+            setStateLoc(res);
+        }
+        get();
+    },[check])
     return (
         <>
             <button className="border-2 rounded-xl bg-blue-500 text-white p-2" onClick={() => setOpen(o => !o)}>Add Theatre</button>
@@ -107,8 +144,24 @@ function Theatreuser() {
                                 <input onChange={(e) => setData({ ...data, name: e.target.value })} className="p-1 border-2 border-zinc-400 rounded-lg min-w-full" type="text" />
                             </div>
                             <div className='flex gap-2 flex-col'>
-                                <div>Address</div>
-                                <textarea onChange={(e) => setData({ ...data, address: e.target.value })} className="p-1 border-2 border-zinc-400 rounded-lg" rows="4" cols="56" />
+                                <div>Region</div>
+                                <input onChange={(e) => setData({ ...data, region: e.target.value })} className="p-1 border-2 border-zinc-400 rounded-lg" type="text"  />
+                            </div>
+                            <div className='flex gap-2 flex-col'>
+                                <div>City</div>
+                                <input onChange={(e) => setData({ ...data, address: e.target.value })} className="p-1 border-2 border-zinc-400 rounded-lg" type="text"  />
+                            </div>
+                            <div className='flex gap-2 flex-col'>
+                                <div>State</div>
+                                <select onChange={(e) => setData({ ...data, state: e.target.value })} className="p-1 border-2 border-zinc-400 rounded-lg min-w-full">
+                                <option>choose State...</option>
+                                    {
+                                        stateLoc.map((item,idx)=>(
+                                            <option value={item._id}>{item.name}</option>
+                                        ))
+                                    }
+                            
+                                </select>
                             </div>
                             <div className="">
                                 <div className="flex gap-2 flex-col">
