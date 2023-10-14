@@ -27,8 +27,7 @@ function LoginSignup() {
             onClickSignIn();
         }
         else{
-            alert("Same email already exists direct login");
-            onClickSignIn();
+            alert(data.error);
         }
         console.log(data);
     }

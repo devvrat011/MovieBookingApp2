@@ -3,12 +3,12 @@ const Theatre = require('../models/theatre.js');
 
 async function addTheatre(req, res) {
     try {
-        const {name,address,number,email} = req.body;
+        const {name,address,number,email,state,region,location} = req.body;
         const existingTheatre = await Theatre.findOne({name});
         if (existingTheatre){
             return res.status(409).json({ error: 'Theatre already exists' });
         }
-        const newTheatre = new Theatre({name,address,number,email});
+        const newTheatre = new Theatre({name,address,number,email,state,region,location});
         await newTheatre.save();
         res.json({ message:'Theatre created successfully',newTheatre});
     } catch (error) {
