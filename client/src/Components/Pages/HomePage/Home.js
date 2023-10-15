@@ -8,7 +8,6 @@ import { Box } from '@chakra-ui/react'
 
 function Home() {
   
-
   const navigate = useNavigate();
   const {Movie,loading} = useContext(context);
   const navigateToMovies = (index) => {
