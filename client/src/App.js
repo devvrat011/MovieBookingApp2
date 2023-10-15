@@ -20,16 +20,19 @@ function App() {
       </Routes>
         <Routes>
         <Route path="/" element={<Home/>}/>
-        {/* <Route path="/movies" element={<Movies/>}/> */}
+         <Route path="/movies" element={<Movies/>}/>
         <Route path="/admin" element={<Admin/>}/>
         <Route path="/user" element={<User/>}/>
         <Route path="/profile" element={<Profile />}/>
         <Route path="/book/:id" element={<BookTicketPage />}/>
         <Route path="/movies/:id" element={<Movies />}/>
 
-        </Routes>
+        </Routes> 
     </div>
   );
 }
 
 export default App;
+
+
+
