@@ -13,16 +13,23 @@ const BookTicketPage = () => {
   const startDate = new Date();
   const [dateS,setDateS]=useState(startDate.toDateString());
   const {id} = useParams();
-  const {getMovie,movieData,getTheatre,getShows,updateShow,getShow}=useContext(context);
+  const {user,getMovie,updateUser,movieData,getTheatre,getShows,updateShow,getShow}=useContext(context);
   const [theatredata,setTheatreData]  = useState();
   const [clickData,setclickData]=useState();
   const [clickTheatre,setClickTheatre]=useState();
   const [bookingseats,setBookingSeats] = useState([]);
   const [some,setSome] = useState(true);
-  console.log(clickData);
+  
     useEffect(()=>{
         getMovie(id);
     },[]);
+
+    useEffect(() => {
+      if (clickTheatre && clickData) {
+        
+        getBookedSeats();
+      }
+    }, [clickTheatre, clickData]);
 
     useEffect(() => {
       const find = async() => {
@@ -33,12 +40,13 @@ const BookTicketPage = () => {
               'Content-Type': 'application/json',
           },
       });
+      
         const res = await response.json();
         fetchedData.push(res.TheatresOwned);
         setTheatreData(fetchedData[0]);
       }
       find();
-    },[movieData,dateS])
+    },[dateS])
   
 
   const [change,setChange] =useState(false);
@@ -50,14 +58,14 @@ const BookTicketPage = () => {
 
   const confirmBooking = async (data) => {
     try {
-      const response = await fetch('http://localhost:8000/booking/add', {
+        const response = await fetch('http://localhost:8000/booking/add', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
           },
           body: JSON.stringify(data),
         });
-        await response.json();
+        const result =await response.json();
         const show_id=clickData._id;
         const res = await getShows(show_id);
         const temp = res.bookedSeats;
@@ -65,8 +73,22 @@ const BookTicketPage = () => {
           temp.push((items.row - 1) * 5 + items.col)
         ))
         res.bookedSeats = temp;
+       
         const hello = await updateShow(clickData._id,res);
-        console.log(hello);
+
+        console.log(res);
+        const updatedUserData = {
+          ...user,
+          bookingMovies: [...user.bookingMovies, result.newBooking._id],
+        };
+    
+        
+        const updateUserResponse=await updateUser(user._id,updatedUserData)
+        console.log(await updateUserResponse.json());
+
+        alert("Ticket Booked ");
+        // closeModal();
+        
     } catch (e) {
       console.log(e);
     }
@@ -107,16 +129,20 @@ const BookTicketPage = () => {
             seats.push((seat.row - 1) * 5 + seat.col)
           }   
       )
-      // console.log(seats);
+
       setData({...data, name:clickTheatre.name,theatre:clickTheatre._id, date: dateS,
       time:clickData.time, amount:clickData.ticketPrice,seats:seats});
-     
+     console.log(data);
       setChange(true);
+     closeModal();
   }
 
   const getBookedSeats = async() => {
+
     const res = await getShows(clickData._id);
+    
     setBookingSeats(res.bookedSeats);
+ 
   }
 
   const isSelectedSeat = (seat) =>
@@ -127,7 +153,7 @@ const BookTicketPage = () => {
 
   const generateSeatsGrid = () => {
     const grid = [];
-    console.log(bookingseats);
+    
     let c = 0;
     for (let row = 1; row <= rows; row++) {
       for (let col = 1; col <= cols; col++) {
@@ -161,7 +187,7 @@ const BookTicketPage = () => {
   };
 
   const handleDateSelect = (selectedDate) => {
-    console.log('Selected Date:', selectedDate.toDateString());
+    
     setDateS(selectedDate.toDateString());
   };
   return (
