@@ -13,13 +13,16 @@ const BookTicketPage = () => {
   const startDate = new Date();
   const [dateS,setDateS]=useState(startDate.toDateString());
   const {id} = useParams();
+
   const {user,getMovie,updateUser,movieData,getTheatre,getShows,updateShow,getShow}=useContext(context);
+
   const [theatredata,setTheatreData]  = useState();
   const [clickData,setclickData]=useState();
   const [clickTheatre,setClickTheatre]=useState();
   const [bookingseats,setBookingSeats] = useState([]);
+
   const [some,setSome] = useState(true);
-  
+
     useEffect(()=>{
         getMovie(id);
     },[]);
@@ -46,10 +49,12 @@ const BookTicketPage = () => {
         setTheatreData(fetchedData[0]);
       }
       find();
-    },[dateS])
-  
 
+    },[dateS])
+
+  
   const [change,setChange] =useState(false);
+  const [checkbook,setCheckBook] =useState(false);
   const [data, setData] = useState({ name: "dfa", theatre: "dfaj", date: "adf", time: "adf", amount: 100 });
   const [selectedSeats, setSelectedSeats] = useState([]);
   const rows = 5;
@@ -89,6 +94,7 @@ const BookTicketPage = () => {
         alert("Ticket Booked ");
         // closeModal();
         
+
     } catch (e) {
       console.log(e);
     }
@@ -97,10 +103,10 @@ const BookTicketPage = () => {
   const closeModal = () => {
     setOpen(o => !o);
   }
+
   const toggleSeat = (row, col) => {
     const seat = { row, col };
     const isSelected = isSelectedSeat(seat);
-
     if (isSelected) {
       setSelectedSeats((prevSelectedSeats) =>
         prevSelectedSeats?.filter(
@@ -127,15 +133,17 @@ const BookTicketPage = () => {
       const seats=[];
       selectedSeats?.map((seat, key) => {   
             seats.push((seat.row - 1) * 5 + seat.col)
-          }   
+          }
       )
 
       setData({...data, name:clickTheatre.name,theatre:clickTheatre._id, date: dateS,
       time:clickData.time, amount:clickData.ticketPrice,seats:seats});
      console.log(data);
+
       setChange(true);
      closeModal();
   }
+
 
   const getBookedSeats = async() => {
 
@@ -145,11 +153,15 @@ const BookTicketPage = () => {
  
   }
 
+ 
+
+
   const isSelectedSeat = (seat) =>
     selectedSeats?.some(
       (selectedSeat) =>
         selectedSeat.row === seat.row && selectedSeat.col === seat.col
     );
+
 
   const generateSeatsGrid = () => {
     const grid = [];
@@ -186,6 +198,8 @@ const BookTicketPage = () => {
     return grid;
   };
 
+
+
   const handleDateSelect = (selectedDate) => {
     
     setDateS(selectedDate.toDateString());
@@ -200,7 +214,7 @@ const BookTicketPage = () => {
       {
           theatredata?.map((item,id) => (
             item.shows?.length?
-              (<div className="w-full">
+              (<div className="w-full" key={id}>
               <div className="border-2 rounded-xl w-[95%] mx-auto h-20 flex p-2 my-2">
                 <div className="w-[30%]">
                   <div className="font-bold text-xl px-[10%]">{item?.name}</div>
@@ -209,8 +223,8 @@ const BookTicketPage = () => {
                 <div className="w-[70%] flex cursor-pointer gap-4">
                   {
                     item.shows?.map((val,id1) => (
-                      <div
-                        onClick={() => {getBookedSeats(); setClickTheatre(item);setclickData(item.shows[id1]) ;setModal(true); setOpen(o => !o); }}
+                      <div key={id1}
+                        onClick={() => {setBookingSeats(val.bookedSeats); setClickTheatre(item);setclickData(item.shows[id1]) ;setModal(true); setOpen(o => !o); }}
                         className="p-2 border-2 text-center rounded-xl text-xl font-bold flex flex-col justify-center"
                       >
                         {val.time}
@@ -237,7 +251,8 @@ const BookTicketPage = () => {
                 </button>
               </div>
               <div className="max-w-sm mx-auto text-center grid grid-cols-5 gap-4">
-                {generateSeatsGrid()}
+                
+                 {generateSeatsGrid()}
               </div>
               <div className="text-center font-bold">Screen</div>
               <div className="h-1.5 bg-gray-500 rounded-br-[900%] rounded-bl-[900%]"></div>

@@ -9,7 +9,6 @@ import Map from '../MapShow/map';
 
 function Home() {
   
-
   const navigate = useNavigate();
   const {Movie,loading} = useContext(context);
   const navigateToMovies = (index) => {
