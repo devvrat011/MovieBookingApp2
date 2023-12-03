@@ -19,8 +19,8 @@ const showSchema = new mongoose.Schema({
   movie:{
     id:{
       type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    unique:false,
+      required: true,
+      unique:false,
     } ,
     name:{
       type: String,

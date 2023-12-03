@@ -28,30 +28,7 @@ function App() {
 			console.log(e);
 		}
 	};
-	// const editItem =async(index) => {
-	// 	const editedTodo = prompt("Edit the todo:");
-	// 	if (editedTodo !== null && editedTodo.trim() !== "") {
-	// 		const updatedList = [...list];
-	// 		updatedList[index].value = editedTodo;
-	// 		setList(updatedList);
-	// 	}
-	// 	try {
-	// 		const response = await fetch(`http://localhost:3001/movie/${id}`, {
-	// 		  method: 'PUT',
-	// 		  headers: {
-	// 			'Content-Type': 'application/json',
-	// 		  },
-	// 		  body: JSON.stringify()
-	// 		});
-		
-	// 		const res = await response.json();
-	// 		// console.log(res);
-	// 		setList(res);
-	// 	}
-	// 	catch(e){
-	// 		console.log(e);
-	// 	}
-	// };
+
 
 	return (
 		<div>

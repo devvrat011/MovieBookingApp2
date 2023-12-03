@@ -209,6 +209,7 @@ const ProviderState = ({ children }) => {
     return updateMovieResponse;
   }
   const updateShow = async (id, updateShowdata) => {
+    // console.log(updateShowdata);
     const updateShowResponse = await fetch(`http://localhost:8000/show/${id}`, {
       method: 'PUT',
       headers: {
@@ -216,6 +217,7 @@ const ProviderState = ({ children }) => {
       },
       body: JSON.stringify(updateShowdata),
     });
+    
     return updateShowResponse;
   }
   const getTheatre = async (id) => {
